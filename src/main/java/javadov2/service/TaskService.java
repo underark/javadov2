@@ -28,7 +28,7 @@ public class TaskService {
         return taskController.deleteTask(task);
     }
 
-    private String markCompleted(Task task) {
+    public String markCompleted(Task task) {
         return taskController.markCompleted(task);
     }
 

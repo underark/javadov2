@@ -6,6 +6,7 @@ import javafx.beans.property.StringProperty;
 
 public interface Interactor {
     Task createTaskFromInput();
+    void markTaskCompleted(Task task);
     StringProperty getProperty(InputStringType type);
 
 }

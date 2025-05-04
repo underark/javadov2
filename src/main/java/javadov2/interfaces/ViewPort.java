@@ -2,8 +2,9 @@ package javadov2.interfaces;
 
 import javadov2.enums.UpdateType;
 import javadov2.objects.Task;
-import javafx.scene.layout.GridPane;
+import javadov2.objects.TaskNode;
+
 
 public interface ViewPort {
-    void updateDisplay(GridPane display, UpdateType type, Task task);
+    TaskNode updateDisplay(UpdateType type, Task task);
 }

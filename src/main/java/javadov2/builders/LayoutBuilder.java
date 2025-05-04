@@ -42,17 +42,17 @@ import java.util.Map;
         GridPane gridPane = new GridPane();
         BorderPane borderPane = new BorderPane();
 
-        Button homeButton = builderUtility.makeStylizedButton("Home", "menu-btn", "home");
+        Button homeButton = builderUtility.makeStylizedButton("Home", "menu-btn", "homeMenu");
         Button inputButton = builderUtility.makeStylizedButton("New task", "menu-btn", "input");
-        Button overdueButton = builderUtility.makeStylizedButton("Show overdue", "menu-btn", "overdue");
-        Button completeButton = builderUtility.makeStylizedButton("Show completed", "menu-btn", "complete");
+        Button overdueButton = builderUtility.makeStylizedButton("Show overdueMenu", "menu-btn", "overdueMenu");
+        Button completeButton = builderUtility.makeStylizedButton("Show completed", "menu-btn", "completeMenu");
         VBox container = new VBox(10, homeButton, inputButton, overdueButton, completeButton);
         container.getStyleClass().add("menu-box");
         Map<TypeOfButton, ButtonBase> buttons = Map.of(
-                TypeOfButton.home, homeButton,
-                TypeOfButton.input, inputButton,
-                TypeOfButton.overdue, overdueButton,
-                TypeOfButton.complete, completeButton
+                TypeOfButton.homeMenu, homeButton,
+                TypeOfButton.inputMenu, inputButton,
+                TypeOfButton.overdueMenu, overdueButton,
+                TypeOfButton.completeMenu, completeButton
         );
 
         borderPane.setLeft(container);
@@ -77,17 +77,17 @@ import java.util.Map;
         Button saveButton = builderUtility.makeStylizedButton("Save", "form-btn", "save");
         HBox bottom = new HBox(saveButton);
 
-        Button homeButton = builderUtility.makeStylizedButton("Home", "menu-btn", "home");
+        Button homeButton = builderUtility.makeStylizedButton("Home", "menu-btn", "homeMenu");
         Button inputButton = builderUtility.makeStylizedButton("New task", "menu-btn", "input");
-        Button overdueButton = builderUtility.makeStylizedButton("Show overdue", "menu-btn", "overdue");
-        Button completeButton = builderUtility.makeStylizedButton("Show completed", "menu-btn", "complete");
+        Button overdueButton = builderUtility.makeStylizedButton("Show overdueMenu", "menu-btn", "overdueMenu");
+        Button completeButton = builderUtility.makeStylizedButton("Show completed", "menu-btn", "completeMenu");
         VBox container = new VBox(10, homeButton, inputButton, overdueButton, completeButton);
         container.getStyleClass().add("menu-box");
         Map<TypeOfButton, ButtonBase> buttons = Map.of(
-                TypeOfButton.home, homeButton,
-                TypeOfButton.input, inputButton,
-                TypeOfButton.overdue, overdueButton,
-                TypeOfButton.complete, completeButton,
+                TypeOfButton.homeMenu, homeButton,
+                TypeOfButton.inputMenu, inputButton,
+                TypeOfButton.overdueMenu, overdueButton,
+                TypeOfButton.completeMenu, completeButton,
                 TypeOfButton.save, saveButton
         );
 
@@ -102,17 +102,17 @@ import java.util.Map;
         GridPane gridPane = new GridPane();
         BorderPane borderPane = new BorderPane();
 
-        Button homeButton = builderUtility.makeStylizedButton("Home", "menu-btn", "home");
+        Button homeButton = builderUtility.makeStylizedButton("Home", "menu-btn", "homeMenu");
         Button inputButton = builderUtility.makeStylizedButton("New task", "menu-btn", "input");
-        Button overdueButton = builderUtility.makeStylizedButton("Show overdue", "menu-btn", "overdue");
-        Button completeButton = builderUtility.makeStylizedButton("Show completed", "menu-btn", "complete");
+        Button overdueButton = builderUtility.makeStylizedButton("Show overdueMenu", "menu-btn", "overdueMenu");
+        Button completeButton = builderUtility.makeStylizedButton("Show completed", "menu-btn", "completeMenu");
         VBox container = new VBox(10, homeButton, inputButton, overdueButton, completeButton);
         container.getStyleClass().add("menu-box");
         Map<TypeOfButton, ButtonBase> buttons = Map.of(
-                TypeOfButton.home, homeButton,
-                TypeOfButton.input, inputButton,
-                TypeOfButton.overdue, overdueButton,
-                TypeOfButton.complete, completeButton
+                TypeOfButton.homeMenu, homeButton,
+                TypeOfButton.inputMenu, inputButton,
+                TypeOfButton.overdueMenu, overdueButton,
+                TypeOfButton.completeMenu, completeButton
         );
 
         borderPane.setLeft(container);
@@ -124,17 +124,17 @@ import java.util.Map;
         GridPane gridPane = new GridPane();
         BorderPane borderPane = new BorderPane();
 
-        Button homeButton = builderUtility.makeStylizedButton("Home", "menu-btn", "home");
+        Button homeButton = builderUtility.makeStylizedButton("Home", "menu-btn", "homeMenu");
         Button inputButton = builderUtility.makeStylizedButton("New task", "menu-btn", "input");
-        Button overdueButton = builderUtility.makeStylizedButton("Show overdue", "menu-btn", "overdue");
-        Button completeButton = builderUtility.makeStylizedButton("Show completed", "menu-btn", "complete");
+        Button overdueButton = builderUtility.makeStylizedButton("Show overdueMenu", "menu-btn", "overdueMenu");
+        Button completeButton = builderUtility.makeStylizedButton("Show completed", "menu-btn", "completeMenu");
         VBox container = new VBox(10, homeButton, inputButton, overdueButton, completeButton);
         container.getStyleClass().add("menu-box");
         Map<TypeOfButton, ButtonBase> buttons = Map.of(
-                TypeOfButton.home, homeButton,
-                TypeOfButton.input, inputButton,
-                TypeOfButton.overdue, overdueButton,
-                TypeOfButton.complete, completeButton
+                TypeOfButton.homeMenu, homeButton,
+                TypeOfButton.inputMenu, inputButton,
+                TypeOfButton.overdueMenu, overdueButton,
+                TypeOfButton.completeMenu, completeButton
         );
 
         borderPane.setLeft(container);

@@ -4,7 +4,6 @@ import javadov2.enums.InputFieldType;
 import javadov2.enums.TypeOfButton;
 import javafx.scene.Node;
 import javafx.scene.control.ButtonBase;
-import javafx.scene.control.Control;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.GridPane;
 
@@ -38,4 +37,5 @@ public class LayoutBundle {
     public GridPane getDisplay() {
         return display;
     }
+
 }

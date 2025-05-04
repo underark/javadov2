@@ -23,7 +23,7 @@ public class BuilderUtility {
 
     public TextField makeShortInput(String id) {
         TextField input = new TextField();
-        input.getStyleClass().add("text-input-short");
+        input.getStyleClass().add("text-inputMenu-short");
         input.setId(id);
         return input;
     }

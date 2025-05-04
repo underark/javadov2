@@ -30,6 +30,10 @@ public class InputInteractor implements Interactor {
         return task;
     }
 
+    public void markTaskCompleted(Task task) {
+        taskService.markCompleted(task);
+    }
+
     private String getStringValue(InputStringType type) {
         switch (type) {
             case title -> {

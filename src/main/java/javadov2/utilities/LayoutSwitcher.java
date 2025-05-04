@@ -38,10 +38,10 @@ public class LayoutSwitcher {
 
     private void matchButtonsToLayout(Map<TypeOfButton, ButtonBase> buttonMap) {
         Map<TypeOfButton, LayoutType> map = Map.of(
-                TypeOfButton.home, LayoutType.todo,
-                TypeOfButton.input, LayoutType.input,
-                TypeOfButton.overdue, LayoutType.overdue,
-                TypeOfButton.complete, LayoutType.complete
+                TypeOfButton.homeMenu, LayoutType.todo,
+                TypeOfButton.inputMenu, LayoutType.input,
+                TypeOfButton.overdueMenu, LayoutType.overdue,
+                TypeOfButton.completeMenu, LayoutType.complete
         );
 
         buttonMap.forEach((typeOfButton, buttonBase) -> {
