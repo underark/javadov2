@@ -1,6 +1,6 @@
 package javadov2.enums;
 
-public enum InputType {
+public enum InputFieldType {
     title,
     dueDate,
     description,

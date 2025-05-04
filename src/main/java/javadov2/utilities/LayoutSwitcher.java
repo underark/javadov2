@@ -45,7 +45,9 @@ public class LayoutSwitcher {
         );
 
         buttonMap.forEach((typeOfButton, buttonBase) -> {
-            buttonBase.setOnAction(event -> switchLayout(map.get(typeOfButton)));
+            if (map.containsKey(typeOfButton)) {
+                buttonBase.setOnAction(event -> switchLayout(map.get(typeOfButton)));
+            }
         });
     }
 }

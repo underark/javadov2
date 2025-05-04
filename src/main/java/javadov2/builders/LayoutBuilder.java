@@ -1,6 +1,6 @@
 package javadov2.builders;
 
-import javadov2.enums.InputType;
+import javadov2.enums.InputFieldType;
 import javadov2.enums.LayoutType;
 import javadov2.enums.TypeOfButton;
 import javadov2.interfaces.Builder;
@@ -68,11 +68,14 @@ import java.util.Map;
         inputContainer.addRow(0, builderUtility.makeStylizedLabel("Title", "strong"), title);
         inputContainer.addRow(1, builderUtility.makeStylizedLabel("Due date", "strong"), due);
         inputContainer.addRow(2, builderUtility.makeStylizedLabel("Description", "strong"), description);
-        Map<InputType, Control> inputs = Map.of(
-                InputType.title, title,
-                InputType.dueDate, due,
-                InputType.description, description
+        Map<InputFieldType, Control> inputs = Map.of(
+                InputFieldType.title, title,
+                InputFieldType.dueDate, due,
+                InputFieldType.description, description
         );
+
+        Button saveButton = builderUtility.makeStylizedButton("Save", "form-btn", "save");
+        HBox bottom = new HBox(saveButton);
 
         Button homeButton = builderUtility.makeStylizedButton("Home", "menu-btn", "home");
         Button inputButton = builderUtility.makeStylizedButton("New task", "menu-btn", "input");
@@ -84,12 +87,14 @@ import java.util.Map;
                 TypeOfButton.home, homeButton,
                 TypeOfButton.input, inputButton,
                 TypeOfButton.overdue, overdueButton,
-                TypeOfButton.complete, completeButton
+                TypeOfButton.complete, completeButton,
+                TypeOfButton.save, saveButton
         );
 
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(container);
         borderPane.setCenter(inputContainer);
+        borderPane.setBottom(bottom);
         return new LayoutBundle(borderPane, buttons, inputs, inputContainer);
     }
 

@@ -1,10 +1,8 @@
 package javadov2.controllers;
 
 
-public class ViewController {
-    private LayoutManager layoutManager;
+import javadov2.interfaces.ViewPort;
 
-    public ViewController(LayoutManager layoutManager) {
-        this.layoutManager = layoutManager;
-    }
+public class ViewController implements ViewPort {
+
 }
