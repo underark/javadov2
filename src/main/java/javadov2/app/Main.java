@@ -21,7 +21,7 @@ public class Main extends Application {
         LayoutBuilder layoutBuilder = new LayoutBuilder();
         LayoutManager layoutManager = new LayoutManager(layoutBuilder);
         layoutManager.initialize();
-        MethodService methodService = new MethodService(layoutManager.giveLayouts(), new ViewController(), new InputInteractor());
+        MethodService methodService = new MethodService(layoutManager.giveLayouts(), new ViewController(layoutManager.giveLayouts()), new InputInteractor());
         methodService.setUpStatic();
 
         stage.setScene(new Scene(layoutManager.giveRoot(), 800, 800));

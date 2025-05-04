@@ -6,7 +6,6 @@ import javadov2.objects.Task;
 import javadov2.utilities.LocalDateUtility;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Objects;
 
 public class TaskService {

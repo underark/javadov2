@@ -68,7 +68,7 @@ import java.util.Map;
         inputContainer.addRow(0, builderUtility.makeStylizedLabel("Title", "strong"), title);
         inputContainer.addRow(1, builderUtility.makeStylizedLabel("Due date", "strong"), due);
         inputContainer.addRow(2, builderUtility.makeStylizedLabel("Description", "strong"), description);
-        Map<InputFieldType, Control> inputs = Map.of(
+        Map<InputFieldType, TextInputControl> inputs = Map.of(
                 InputFieldType.title, title,
                 InputFieldType.dueDate, due,
                 InputFieldType.description, description

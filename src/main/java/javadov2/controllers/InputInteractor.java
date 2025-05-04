@@ -20,12 +20,14 @@ public class InputInteractor implements Interactor {
         descriptionProperty = new SimpleStringProperty();
     }
 
-    public void createTaskFromInput() {
+    public Task createTaskFromInput() {
         String title = getStringValue(InputStringType.title);
         String date = getStringValue(InputStringType.date);
         String description = getStringValue(InputStringType.description);
-        String result = taskService.saveTask(new Task(title, date, description));
+        Task task = new Task(title, date, description);
+        String result = taskService.saveTask(task);
         System.out.println(result);
+        return task;
     }
 
     private String getStringValue(InputStringType type) {
@@ -45,7 +47,7 @@ public class InputInteractor implements Interactor {
         }
     }
 
-    private StringProperty getProperty(InputStringType type) {
+    public StringProperty getProperty(InputStringType type) {
         switch (type) {
             case title -> {
                 return titleProperty;
