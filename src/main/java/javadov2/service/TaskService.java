@@ -37,8 +37,8 @@ public class TaskService {
         return new ArrayList<>(taskController.getAllTasks());
     }
 
-    public List<Task> getOverdueTasks() {
-        List<Task> tasks = getAllTasks();
+    public ArrayList<Task> getOverdueTasks() {
+        ArrayList<Task> tasks = getAllTasks();
         return new ArrayList<>(tasks.stream()
                 .filter(e -> localDateUtility.isOverdue(e))
                 .toList());
@@ -51,7 +51,7 @@ public class TaskService {
                 .toList());
     }
 
-    private ArrayList<Task> getCompleteTasks() {
+    public ArrayList<Task> getCompleteTasks() {
         ArrayList<Task> tasks = getAllTasks();
         return new ArrayList<>(tasks.stream()
                 .filter(Task::getCompletion)

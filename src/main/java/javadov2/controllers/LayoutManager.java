@@ -1,5 +1,6 @@
 package javadov2.controllers;
 
+import javadov2.enums.ComboBoxType;
 import javadov2.enums.InputFieldType;
 import javadov2.enums.LayoutType;
 import javadov2.enums.TypeOfButton;
@@ -8,6 +9,7 @@ import javadov2.interfaces.Manager;
 import javadov2.objects.LayoutBundle;
 import javadov2.utilities.LayoutSwitcher;
 import javafx.scene.control.ButtonBase;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -63,6 +65,18 @@ public class LayoutManager implements Manager {
             }
         });
         return foundInputs;
+    }
+
+    public ArrayList<ComboBox> findComboBoxByType(ComboBoxType comboBoxType) {
+        ArrayList<ComboBox> foundBoxes = new ArrayList<>();
+        layouts.forEach((type, bundle) -> {
+            Map<ComboBoxType, ComboBox> boxes = bundle.getComboBoxes();
+            if (boxes.containsKey(comboBoxType)) {
+                ComboBox foundBox = boxes.get(comboBoxType);
+                foundBoxes.add(foundBox);
+            }
+        });
+        return foundBoxes;
     }
 
     public Map<LayoutType, GridPane> getDisplays() {

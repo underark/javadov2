@@ -9,17 +9,22 @@ import javafx.scene.control.ButtonBase;
 import javafx.scene.control.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MethodService {
     private ArrayList<ButtonBase> saveButtons;
+    private ArrayList<ButtonBase> searchButtons;
+    private ArrayList<ComboBox> queryBoxes;
     private ArrayList<TextInputControl> titleInputs;
     private ArrayList<TextInputControl> dueDateInputs;
     private ArrayList<TextInputControl> descriptionInputs;
     private ViewPort viewController;
     private Interactor inputInteractor;
 
-    public MethodService(ArrayList<ButtonBase> saveButtons, ArrayList<TextInputControl> titleInputs, ArrayList<TextInputControl> dueDateInputs, ArrayList<TextInputControl> descriptionInputs, ViewPort viewController, Interactor inputInteractor) {
+    public MethodService(ArrayList<ButtonBase> saveButtons, ArrayList<ButtonBase> searchButtons, ArrayList<ComboBox> queryBoxes, ArrayList<TextInputControl> titleInputs, ArrayList<TextInputControl> dueDateInputs, ArrayList<TextInputControl> descriptionInputs, ViewPort viewController, Interactor inputInteractor) {
         this.saveButtons = saveButtons;
+        this.searchButtons = searchButtons;
+        this.queryBoxes = queryBoxes;
         this.titleInputs = titleInputs;
         this.dueDateInputs = dueDateInputs;
         this.descriptionInputs = descriptionInputs;
@@ -56,6 +61,16 @@ public class MethodService {
                 saveButtons.forEach(button -> button.setOnAction(e -> {
                     Task newTask = inputInteractor.createTaskFromInput();
                     viewController.addToDisplay(LayoutType.todo, newTask);
+                }));
+            }
+            case search -> {
+                searchButtons.forEach(button -> button.setOnAction(event -> {
+                    String query = queryBoxes.get(0).getValue().toString();
+                    switch (query) {
+                        case "Complete":
+
+                            break;
+                    }
                 }));
             }
         }

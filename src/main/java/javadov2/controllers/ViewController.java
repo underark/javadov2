@@ -8,8 +8,11 @@ import javadov2.objects.TaskNode;
 import javadov2.utilities.ViewHelper;
 import javafx.scene.layout.GridPane;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ViewController implements ViewPort {
     private Map<LayoutType, GridPane> displays;
@@ -43,4 +46,15 @@ public class ViewController implements ViewPort {
             shownTasks.get(type).remove(task);
         }
     }
+
+    public void addToDisplay(LayoutType type, ArrayList<Task> tasks) {
+        if (displays.containsKey(type)) {
+            GridPane display = displays.get(type);
+            List<TaskNode> taskNodes = tasks.stream()
+                    .map(task -> viewHelper.taskToNode(task))
+                    .toList();
+            taskNodes.forEach(node -> display.addRow(display.getRowCount() + 1, node.getNode()));
+        }
+    }
+
 }

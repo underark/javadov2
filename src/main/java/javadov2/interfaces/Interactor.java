@@ -4,9 +4,12 @@ import javadov2.enums.InputStringType;
 import javadov2.objects.Task;
 import javafx.beans.property.StringProperty;
 
+import java.util.ArrayList;
+
 public interface Interactor {
     Task createTaskFromInput();
     void markTaskCompleted(Task task);
     StringProperty getProperty(InputStringType type);
+    ArrayList<Task> search(String query);
 
 }

@@ -1,5 +1,6 @@
 package javadov2.builders;
 
+import javadov2.enums.ComboBoxType;
 import javadov2.enums.InputFieldType;
 import javadov2.enums.LayoutType;
 import javadov2.enums.TypeOfButton;
@@ -50,7 +51,7 @@ import java.util.Map;
         ButtonBundle buttonBundle = leftMenuPanel();
         borderPane.setLeft(buttonBundle.getContainer());
         borderPane.setCenter(gridPane);
-        return new LayoutBundle(borderPane, buttonBundle.getButtons(), Map.of(), gridPane);
+        return new LayoutBundle(borderPane, Map.of(), buttonBundle.getButtons(), Map.of(), gridPane);
     }
 
     private LayoutBundle input() {
@@ -70,7 +71,7 @@ import java.util.Map;
         borderPane.setLeft(buttonBundle.getContainer());
         borderPane.setCenter(inputContainer);
         borderPane.setBottom(bottom);
-        return new LayoutBundle(borderPane, buttonBundle.getButtons(), inputBundle.getInputs(), inputContainer);
+        return new LayoutBundle(borderPane, Map.of(), buttonBundle.getButtons(), inputBundle.getInputs(), inputContainer);
     }
 
     private LayoutBundle filter() {
@@ -78,11 +79,13 @@ import java.util.Map;
         ButtonBundle buttonBundle = leftMenuPanel();
         ObservableList<String> options = FXCollections.observableArrayList("Complete", "Overdue", "Tag");
         ComboBox filterOptions = new ComboBox<>(options);
-        HBox center = new HBox(filterOptions);
+        Button searchButton = builderUtility.makeStylizedButton("search", "form-btn", "search");
+        buttonBundle.addButton(TypeOfButton.search, searchButton);
+        HBox center = new HBox(filterOptions, searchButton);
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(buttonBundle.getContainer());
         borderPane.setCenter(center);
-        return new LayoutBundle(borderPane, buttonBundle.getButtons(), Map.of(), container);
+        return new LayoutBundle(borderPane, Map.of(ComboBoxType.query, filterOptions), buttonBundle.getButtons(), Map.of(), container);
     }
 
     private LayoutBundle overdue() {
@@ -91,7 +94,7 @@ import java.util.Map;
         ButtonBundle bundle = leftMenuPanel();
         borderPane.setLeft(bundle.getContainer());
         borderPane.setCenter(gridPane);
-        return new LayoutBundle(borderPane, bundle.getButtons(), Map.of(), gridPane);
+        return new LayoutBundle(borderPane, Map.of(), bundle.getButtons(), Map.of(), gridPane);
     }
 
     private LayoutBundle complete() {
@@ -100,7 +103,7 @@ import java.util.Map;
         ButtonBundle menuButtons = leftMenuPanel();
         borderPane.setLeft(menuButtons.getContainer());
         borderPane.setCenter(gridPane);
-        return new LayoutBundle(borderPane, menuButtons.getButtons(), Map.of(), gridPane);
+        return new LayoutBundle(borderPane, Map.of(), menuButtons.getButtons(), Map.of(), gridPane);
     }
 
     private ButtonBundle leftMenuPanel() {

@@ -7,4 +7,5 @@ public enum TypeOfButton {
     filterMenu,
     save,
     complete,
+    search,
 }

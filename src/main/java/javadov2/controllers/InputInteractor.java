@@ -7,6 +7,8 @@ import javadov2.service.TaskService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.ArrayList;
+
 public class InputInteractor implements Interactor {
     private TaskService taskService;
     private final StringProperty titleProperty;
@@ -28,6 +30,14 @@ public class InputInteractor implements Interactor {
         String result = taskService.saveTask(task);
         System.out.println(result);
         return task;
+    }
+
+    public ArrayList<Task> search(String query) {
+        return switch (query) {
+            case "Complete" -> taskService.getCompleteTasks();
+            case "Overdue" -> taskService.getOverdueTasks();
+            default -> null;
+        };
     }
 
     public void markTaskCompleted(Task task) {
