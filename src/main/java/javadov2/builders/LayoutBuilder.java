@@ -4,8 +4,12 @@ import javadov2.enums.InputFieldType;
 import javadov2.enums.LayoutType;
 import javadov2.enums.TypeOfButton;
 import javadov2.interfaces.Builder;
+import javadov2.objects.ButtonBundle;
+import javadov2.objects.InputBundle;
 import javadov2.objects.LayoutBundle;
 import javadov2.utilities.BuilderUtility;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -13,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 
 // Makes the Layouts that we are going to store in our LayoutManager
@@ -31,6 +36,7 @@ import java.util.Map;
         map.put(LayoutType.input, input());
         map.put(LayoutType.overdue, overdue());
         map.put(LayoutType.complete, complete());
+        map.put(LayoutType.filter, filter());
         return map;
     }
 
@@ -41,105 +47,86 @@ import java.util.Map;
     private LayoutBundle toDo() {
         GridPane gridPane = new GridPane();
         BorderPane borderPane = new BorderPane();
-
-        Button homeButton = builderUtility.makeStylizedButton("Home", "menu-btn", "homeMenu");
-        Button inputButton = builderUtility.makeStylizedButton("New task", "menu-btn", "input");
-        Button overdueButton = builderUtility.makeStylizedButton("Show overdueMenu", "menu-btn", "overdueMenu");
-        Button completeButton = builderUtility.makeStylizedButton("Show completed", "menu-btn", "completeMenu");
-        VBox container = new VBox(10, homeButton, inputButton, overdueButton, completeButton);
-        container.getStyleClass().add("menu-box");
-        Map<TypeOfButton, ButtonBase> buttons = Map.of(
-                TypeOfButton.homeMenu, homeButton,
-                TypeOfButton.inputMenu, inputButton,
-                TypeOfButton.overdueMenu, overdueButton,
-                TypeOfButton.completeMenu, completeButton
-        );
-
-        borderPane.setLeft(container);
+        ButtonBundle buttonBundle = leftMenuPanel();
+        borderPane.setLeft(buttonBundle.getContainer());
         borderPane.setCenter(gridPane);
-        return new LayoutBundle(borderPane, buttons, Map.of(), gridPane);
+        return new LayoutBundle(borderPane, buttonBundle.getButtons(), Map.of(), gridPane);
     }
 
     private LayoutBundle input() {
         GridPane inputContainer = new GridPane();
-        TextField title = builderUtility.makeShortInput("title");
-        TextField due = builderUtility.makeShortInput("due");
-        TextArea description =  builderUtility.makeLongInput(100, "description");
-        inputContainer.addRow(0, builderUtility.makeStylizedLabel("Title", "strong"), title);
-        inputContainer.addRow(1, builderUtility.makeStylizedLabel("Due date", "strong"), due);
-        inputContainer.addRow(2, builderUtility.makeStylizedLabel("Description", "strong"), description);
-        Map<InputFieldType, TextInputControl> inputs = Map.of(
-                InputFieldType.title, title,
-                InputFieldType.dueDate, due,
-                InputFieldType.description, description
-        );
+        InputBundle inputBundle = inputPanel();
+        inputContainer.addRow(0, builderUtility.makeStylizedLabel("Title", "strong"), inputBundle.findInputByType(InputFieldType.title));
+        inputContainer.addRow(1, builderUtility.makeStylizedLabel("Due date", "strong"), inputBundle.findInputByType(InputFieldType.dueDate));
+        inputContainer.addRow(2, builderUtility.makeStylizedLabel("Description", "strong"), inputBundle.findInputByType(InputFieldType.description));
 
         Button saveButton = builderUtility.makeStylizedButton("Save", "form-btn", "save");
         HBox bottom = new HBox(saveButton);
 
-        Button homeButton = builderUtility.makeStylizedButton("Home", "menu-btn", "homeMenu");
-        Button inputButton = builderUtility.makeStylizedButton("New task", "menu-btn", "input");
-        Button overdueButton = builderUtility.makeStylizedButton("Show overdueMenu", "menu-btn", "overdueMenu");
-        Button completeButton = builderUtility.makeStylizedButton("Show completed", "menu-btn", "completeMenu");
-        VBox container = new VBox(10, homeButton, inputButton, overdueButton, completeButton);
-        container.getStyleClass().add("menu-box");
-        Map<TypeOfButton, ButtonBase> buttons = Map.of(
-                TypeOfButton.homeMenu, homeButton,
-                TypeOfButton.inputMenu, inputButton,
-                TypeOfButton.overdueMenu, overdueButton,
-                TypeOfButton.completeMenu, completeButton,
-                TypeOfButton.save, saveButton
-        );
+        ButtonBundle buttonBundle = leftMenuPanel();
+        buttonBundle.addButton(TypeOfButton.save, saveButton);
 
         BorderPane borderPane = new BorderPane();
-        borderPane.setLeft(container);
+        borderPane.setLeft(buttonBundle.getContainer());
         borderPane.setCenter(inputContainer);
         borderPane.setBottom(bottom);
-        return new LayoutBundle(borderPane, buttons, inputs, inputContainer);
+        return new LayoutBundle(borderPane, buttonBundle.getButtons(), inputBundle.getInputs(), inputContainer);
+    }
+
+    private LayoutBundle filter() {
+        GridPane container = new GridPane();
+        ButtonBundle buttonBundle = leftMenuPanel();
+        ObservableList<String> options = FXCollections.observableArrayList("Complete", "Overdue", "Tag");
+        ComboBox filterOptions = new ComboBox<>(options);
+        HBox center = new HBox(filterOptions);
+        BorderPane borderPane = new BorderPane();
+        borderPane.setLeft(buttonBundle.getContainer());
+        borderPane.setCenter(center);
+        return new LayoutBundle(borderPane, buttonBundle.getButtons(), Map.of(), container);
     }
 
     private LayoutBundle overdue() {
         GridPane gridPane = new GridPane();
         BorderPane borderPane = new BorderPane();
-
-        Button homeButton = builderUtility.makeStylizedButton("Home", "menu-btn", "homeMenu");
-        Button inputButton = builderUtility.makeStylizedButton("New task", "menu-btn", "input");
-        Button overdueButton = builderUtility.makeStylizedButton("Show overdueMenu", "menu-btn", "overdueMenu");
-        Button completeButton = builderUtility.makeStylizedButton("Show completed", "menu-btn", "completeMenu");
-        VBox container = new VBox(10, homeButton, inputButton, overdueButton, completeButton);
-        container.getStyleClass().add("menu-box");
-        Map<TypeOfButton, ButtonBase> buttons = Map.of(
-                TypeOfButton.homeMenu, homeButton,
-                TypeOfButton.inputMenu, inputButton,
-                TypeOfButton.overdueMenu, overdueButton,
-                TypeOfButton.completeMenu, completeButton
-        );
-
-        borderPane.setLeft(container);
+        ButtonBundle bundle = leftMenuPanel();
+        borderPane.setLeft(bundle.getContainer());
         borderPane.setCenter(gridPane);
-        return new LayoutBundle(borderPane, buttons, Map.of(), gridPane);
+        return new LayoutBundle(borderPane, bundle.getButtons(), Map.of(), gridPane);
     }
 
     private LayoutBundle complete() {
         GridPane gridPane = new GridPane();
         BorderPane borderPane = new BorderPane();
+        ButtonBundle menuButtons = leftMenuPanel();
+        borderPane.setLeft(menuButtons.getContainer());
+        borderPane.setCenter(gridPane);
+        return new LayoutBundle(borderPane, menuButtons.getButtons(), Map.of(), gridPane);
+    }
 
+    private ButtonBundle leftMenuPanel() {
         Button homeButton = builderUtility.makeStylizedButton("Home", "menu-btn", "homeMenu");
         Button inputButton = builderUtility.makeStylizedButton("New task", "menu-btn", "input");
-        Button overdueButton = builderUtility.makeStylizedButton("Show overdueMenu", "menu-btn", "overdueMenu");
-        Button completeButton = builderUtility.makeStylizedButton("Show completed", "menu-btn", "completeMenu");
-        VBox container = new VBox(10, homeButton, inputButton, overdueButton, completeButton);
+        Button filterButton = builderUtility.makeStylizedButton("Show filters", "menu-btn", "filterMenu");
+        VBox container = new VBox();
         container.getStyleClass().add("menu-box");
-        Map<TypeOfButton, ButtonBase> buttons = Map.of(
+        Map<TypeOfButton, ButtonBase> buttons = new HashMap<>(Map.of(
                 TypeOfButton.homeMenu, homeButton,
                 TypeOfButton.inputMenu, inputButton,
-                TypeOfButton.overdueMenu, overdueButton,
-                TypeOfButton.completeMenu, completeButton
-        );
+                TypeOfButton.filterMenu, filterButton
+        ));
+        return new ButtonBundle(buttons, container);
+    }
 
-        borderPane.setLeft(container);
-        borderPane.setCenter(gridPane);
-        return new LayoutBundle(borderPane, buttons, Map.of(), gridPane);
+    private InputBundle inputPanel() {
+        TextField title = builderUtility.makeShortInput("title");
+        TextField due = builderUtility.makeShortInput("due");
+        TextArea description =  builderUtility.makeLongInput(100, "description");
+        Map<InputFieldType, TextInputControl> inputs = new HashMap<>(Map.of(
+                InputFieldType.title, title,
+                InputFieldType.dueDate, due,
+                InputFieldType.description, description
+        ));
+        return new InputBundle(inputs, new HBox());
     }
 
     private Node toastContainer() {

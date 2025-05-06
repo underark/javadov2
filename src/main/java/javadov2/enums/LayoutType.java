@@ -5,4 +5,5 @@ public enum LayoutType {
     input,
     overdue,
     complete,
+    filter,
 }

@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -15,6 +16,7 @@ public class TaskNode {
     Node title;
     Node dueDate;
     Node description;
+    Node node;
     Map<TypeOfButton, ButtonBase> buttons;
 
     public TaskNode(Task task, NodeMethod onComplete) {
@@ -26,6 +28,7 @@ public class TaskNode {
             TypeOfButton.complete, new Button("mark complete")
         );
         buttons.get(TypeOfButton.complete).setOnAction(e -> onComplete.onPress(task));
+        node = new HBox(title, dueDate, description, getButton(TypeOfButton.complete));
     }
 
     public Node getTitle() {
@@ -57,5 +60,9 @@ public class TaskNode {
 
     public Map<TypeOfButton, ButtonBase> getButtons() {
         return buttons;
+    }
+
+    public Node getNode() {
+        return node;
     }
 }

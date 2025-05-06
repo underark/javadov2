@@ -4,7 +4,6 @@ import javadov2.enums.*;
 import javadov2.interfaces.Interactor;
 import javadov2.interfaces.ViewPort;
 import javadov2.objects.Task;
-import javadov2.objects.TaskNode;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.*;
@@ -49,14 +48,15 @@ public class MethodService {
         }
     }
 
+    // Am I ever going to call this with something other than 'save'?
+    // If not, consider renaming it to wireSaveButtons and make it do just that
     private void wireButtons(TypeOfButton typeOfButton) {
         switch (typeOfButton) {
             case save -> {
-                saveButtons.forEach(button -> button.setOnAction
-                        (e -> {
-                            Task result = inputInteractor.createTaskFromInput();
-                            viewController.updateDisplay(UpdateType.add, result);
-                        }));
+                saveButtons.forEach(button -> button.setOnAction(e -> {
+                    Task newTask = inputInteractor.createTaskFromInput();
+                    viewController.addToDisplay(LayoutType.todo, newTask);
+                }));
             }
         }
     }

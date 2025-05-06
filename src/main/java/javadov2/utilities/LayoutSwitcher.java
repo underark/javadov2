@@ -30,6 +30,7 @@ public class LayoutSwitcher {
         switchLayout(LayoutType.todo);
     }
 
+    // Could this work with a list of only the menu buttons?
     private void wireButtons() {
         layouts.forEach((type, layoutBundle) -> {
             matchButtonsToLayout(layoutBundle.getButtons());
@@ -40,8 +41,7 @@ public class LayoutSwitcher {
         Map<TypeOfButton, LayoutType> map = Map.of(
                 TypeOfButton.homeMenu, LayoutType.todo,
                 TypeOfButton.inputMenu, LayoutType.input,
-                TypeOfButton.overdueMenu, LayoutType.overdue,
-                TypeOfButton.completeMenu, LayoutType.complete
+                TypeOfButton.filterMenu, LayoutType.filter
         );
 
         buttonMap.forEach((typeOfButton, buttonBase) -> {
