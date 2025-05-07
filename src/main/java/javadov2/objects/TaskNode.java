@@ -16,19 +16,21 @@ public class TaskNode {
     Node title;
     Node dueDate;
     Node description;
+    Node tag;
     Node node;
     Map<TypeOfButton, ButtonBase> buttons;
 
     public TaskNode(Task task, NodeMethod onComplete) {
         this.task = task;
-        this.title = new Label(task.getTitle());
-        this.dueDate = new Label(task.getDueDate());
-        this.description = new Label(task.getDescription());
+        title = new Label(task.getTitle());
+        dueDate = new Label(task.getDueDate());
+        description = new Label(task.getDescription());
+        tag = new Label(task.getTag());
         buttons = Map.of(
             TypeOfButton.complete, new Button("mark complete")
         );
         buttons.get(TypeOfButton.complete).setOnAction(e -> onComplete.onPress(task));
-        node = new HBox(title, dueDate, description, getButton(TypeOfButton.complete));
+        node = new HBox(title, dueDate, description, tag, getButton(TypeOfButton.complete));
     }
 
     public Node getTitle() {

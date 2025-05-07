@@ -38,6 +38,7 @@ import java.util.Map;
         map.put(LayoutType.overdue, overdue());
         map.put(LayoutType.complete, complete());
         map.put(LayoutType.filter, filter());
+        map.put(LayoutType.filterDisplay, filterDisplay());
         return map;
     }
 
@@ -51,7 +52,7 @@ import java.util.Map;
         ButtonBundle buttonBundle = leftMenuPanel();
         borderPane.setLeft(buttonBundle.getContainer());
         borderPane.setCenter(gridPane);
-        return new LayoutBundle(borderPane, Map.of(), buttonBundle.getButtons(), Map.of(), gridPane);
+        return new LayoutBundle(borderPane, buttonBundle.getButtons(), Map.of(), gridPane);
     }
 
     private LayoutBundle input() {
@@ -60,7 +61,7 @@ import java.util.Map;
         inputContainer.addRow(0, builderUtility.makeStylizedLabel("Title", "strong"), inputBundle.findInputByType(InputFieldType.title));
         inputContainer.addRow(1, builderUtility.makeStylizedLabel("Due date", "strong"), inputBundle.findInputByType(InputFieldType.dueDate));
         inputContainer.addRow(2, builderUtility.makeStylizedLabel("Description", "strong"), inputBundle.findInputByType(InputFieldType.description));
-
+        inputContainer.addRow(3, builderUtility.makeStylizedLabel("Tag", "strong"), inputBundle.findInputByType(InputFieldType.tagInput));
         Button saveButton = builderUtility.makeStylizedButton("Save", "form-btn", "save");
         HBox bottom = new HBox(saveButton);
 
@@ -71,21 +72,29 @@ import java.util.Map;
         borderPane.setLeft(buttonBundle.getContainer());
         borderPane.setCenter(inputContainer);
         borderPane.setBottom(bottom);
-        return new LayoutBundle(borderPane, Map.of(), buttonBundle.getButtons(), inputBundle.getInputs(), inputContainer);
+        return new LayoutBundle(borderPane, buttonBundle.getButtons(), inputBundle.getInputs(), inputContainer);
     }
 
     private LayoutBundle filter() {
         GridPane container = new GridPane();
         ButtonBundle buttonBundle = leftMenuPanel();
-        ObservableList<String> options = FXCollections.observableArrayList("Complete", "Overdue", "Tag");
-        ComboBox filterOptions = new ComboBox<>(options);
         Button searchButton = builderUtility.makeStylizedButton("search", "form-btn", "search");
         buttonBundle.addButton(TypeOfButton.search, searchButton);
-        HBox center = new HBox(filterOptions, searchButton);
+        InputBundle inputBundle = new InputBundle(Map.of(InputFieldType.tagSearch, builderUtility.makeShortInput("tagSearch")), new HBox());
+        HBox center = new HBox(inputBundle.findInputByType(InputFieldType.tagSearch), searchButton);
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(buttonBundle.getContainer());
         borderPane.setCenter(center);
-        return new LayoutBundle(borderPane, Map.of(ComboBoxType.query, filterOptions), buttonBundle.getButtons(), Map.of(), container);
+        return new LayoutBundle(borderPane, buttonBundle.getButtons(), inputBundle.getInputs(), container);
+    }
+
+    private LayoutBundle filterDisplay() {
+            GridPane container = new GridPane();
+            ButtonBundle buttonBundle = leftMenuPanel();
+            BorderPane borderPane = new BorderPane();
+            borderPane.setLeft(buttonBundle.getContainer());
+            borderPane.setCenter(container);
+            return new LayoutBundle(borderPane, buttonBundle.getButtons(), Map.of(), container);
     }
 
     private LayoutBundle overdue() {
@@ -94,7 +103,7 @@ import java.util.Map;
         ButtonBundle bundle = leftMenuPanel();
         borderPane.setLeft(bundle.getContainer());
         borderPane.setCenter(gridPane);
-        return new LayoutBundle(borderPane, Map.of(), bundle.getButtons(), Map.of(), gridPane);
+        return new LayoutBundle(borderPane, bundle.getButtons(), Map.of(), gridPane);
     }
 
     private LayoutBundle complete() {
@@ -103,19 +112,21 @@ import java.util.Map;
         ButtonBundle menuButtons = leftMenuPanel();
         borderPane.setLeft(menuButtons.getContainer());
         borderPane.setCenter(gridPane);
-        return new LayoutBundle(borderPane, Map.of(), menuButtons.getButtons(), Map.of(), gridPane);
+        return new LayoutBundle(borderPane, menuButtons.getButtons(), Map.of(), gridPane);
     }
 
     private ButtonBundle leftMenuPanel() {
-        Button homeButton = builderUtility.makeStylizedButton("Home", "menu-btn", "homeMenu");
+        Button homeButton = builderUtility.makeStylizedButton("Home", "menu-btn", "home");
         Button inputButton = builderUtility.makeStylizedButton("New task", "menu-btn", "input");
-        Button filterButton = builderUtility.makeStylizedButton("Show filters", "menu-btn", "filterMenu");
+        Button completeButton = builderUtility.makeStylizedButton("Show complete", "menu-btn", "complete");
+        Button filterButton = builderUtility.makeStylizedButton("Search tag", "menu-btn", "searchTag");
         VBox container = new VBox();
         container.getStyleClass().add("menu-box");
         Map<TypeOfButton, ButtonBase> buttons = new HashMap<>(Map.of(
                 TypeOfButton.homeMenu, homeButton,
                 TypeOfButton.inputMenu, inputButton,
-                TypeOfButton.filterMenu, filterButton
+                TypeOfButton.complete, completeButton,
+                TypeOfButton.filter, filterButton
         ));
         return new ButtonBundle(buttons, container);
     }
@@ -124,10 +135,12 @@ import java.util.Map;
         TextField title = builderUtility.makeShortInput("title");
         TextField due = builderUtility.makeShortInput("due");
         TextArea description =  builderUtility.makeLongInput(100, "description");
+        TextField tagInput = builderUtility.makeShortInput("tagInput");
         Map<InputFieldType, TextInputControl> inputs = new HashMap<>(Map.of(
                 InputFieldType.title, title,
                 InputFieldType.dueDate, due,
-                InputFieldType.description, description
+                InputFieldType.description, description,
+                InputFieldType.tagInput, tagInput
         ));
         return new InputBundle(inputs, new HBox());
     }

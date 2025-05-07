@@ -4,7 +4,7 @@ package javadov2.enums;
 public enum TypeOfButton {
     homeMenu,
     inputMenu,
-    filterMenu,
+    filter,
     save,
     complete,
     search,

@@ -41,7 +41,8 @@ public class LayoutSwitcher {
         Map<TypeOfButton, LayoutType> map = Map.of(
                 TypeOfButton.homeMenu, LayoutType.todo,
                 TypeOfButton.inputMenu, LayoutType.input,
-                TypeOfButton.filterMenu, LayoutType.filter
+                TypeOfButton.complete, LayoutType.complete,
+                TypeOfButton.filter, LayoutType.filter
         );
 
         buttonMap.forEach((typeOfButton, buttonBase) -> {

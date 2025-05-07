@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class ViewController implements ViewPort {
     private Map<LayoutType, GridPane> displays;
@@ -48,6 +47,7 @@ public class ViewController implements ViewPort {
     }
 
     public void addToDisplay(LayoutType type, ArrayList<Task> tasks) {
+        displays.get(type).getChildren().clear();
         if (displays.containsKey(type)) {
             GridPane display = displays.get(type);
             List<TaskNode> taskNodes = tasks.stream()

@@ -24,7 +24,7 @@ public class Main extends Application {
         LayoutBuilder layoutBuilder = new LayoutBuilder();
         LayoutManager layoutManager = new LayoutManager(layoutBuilder);
         layoutManager.initialize();
-        MethodService methodService = new MethodService(layoutManager.findButtonsByType(TypeOfButton.save), layoutManager.findButtonsByType(TypeOfButton.search), layoutManager.findComboBoxByType(ComboBoxType.query), layoutManager.findInputsByType(InputFieldType.title), layoutManager.findInputsByType(InputFieldType.dueDate), layoutManager.findInputsByType(InputFieldType.description), new ViewController(layoutManager.getDisplays()), new InputInteractor());
+        MethodService methodService = new MethodService(layoutManager.giveLayoutSwitcher(), layoutManager.findButtonsByType(TypeOfButton.save), layoutManager.findButtonsByType(TypeOfButton.search), layoutManager.findInputsByType(InputFieldType.tagInput), layoutManager.findInputsByType(InputFieldType.tagSearch), layoutManager.findInputsByType(InputFieldType.title), layoutManager.findInputsByType(InputFieldType.dueDate), layoutManager.findInputsByType(InputFieldType.description), new ViewController(layoutManager.getDisplays()), new InputInteractor());
         methodService.setUpStatic();
 
         stage.setScene(new Scene(layoutManager.giveRoot(), 800, 800));

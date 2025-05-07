@@ -4,4 +4,6 @@ public enum InputFieldType {
     title,
     dueDate,
     description,
+    tagInput,
+    tagSearch,
 }

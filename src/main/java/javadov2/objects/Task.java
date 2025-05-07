@@ -4,13 +4,15 @@ public class Task {
     private String title;
     private String dueDate;
     private String description;
+    private String tag;
     private boolean completed;
 
-    public Task(String title, String dueDate, String description) {
+    public Task(String title, String dueDate, String description, String tag) {
         //this.number = number;
         this.title = title;
         this.dueDate = dueDate;
         this.description = description;
+        this.tag = tag;
         this.completed = false;
     }
 
@@ -24,6 +26,10 @@ public class Task {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getTag() {
+        return tag;
     }
 
     public boolean getCompletion() {

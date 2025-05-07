@@ -6,7 +6,6 @@ import javadov2.objects.Task;
 import javadov2.utilities.LocalDateUtility;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class TaskService {
@@ -37,7 +36,7 @@ public class TaskService {
         return new ArrayList<>(taskController.getAllTasks());
     }
 
-    public ArrayList<Task> getOverdueTasks() {
+    public ArrayList<Task> findOverdueTasks() {
         ArrayList<Task> tasks = getAllTasks();
         return new ArrayList<>(tasks.stream()
                 .filter(e -> localDateUtility.isOverdue(e))
@@ -51,10 +50,21 @@ public class TaskService {
                 .toList());
     }
 
-    public ArrayList<Task> getCompleteTasks() {
+    public ArrayList<Task> findCompleteTasks() {
         ArrayList<Task> tasks = getAllTasks();
         return new ArrayList<>(tasks.stream()
                 .filter(Task::getCompletion)
                 .toList());
+    }
+
+    public ArrayList<Task> searchTags(String tag) {
+        ArrayList<Task> foundTasks = new ArrayList<>();
+        getAllTasks().stream()
+                .forEach(task -> {
+                    if (Objects.equals(task.getTag(), tag)) {
+                        foundTasks.add(task);
+                    }
+                });
+        return foundTasks;
     }
 }

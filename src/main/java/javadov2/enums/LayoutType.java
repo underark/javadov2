@@ -6,4 +6,5 @@ public enum LayoutType {
     overdue,
     complete,
     filter,
+    filterDisplay,
 }

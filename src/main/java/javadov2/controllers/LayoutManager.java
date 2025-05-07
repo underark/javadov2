@@ -39,6 +39,10 @@ public class LayoutManager implements Manager {
         return root;
     }
 
+    public LayoutSwitcher giveLayoutSwitcher() {
+        return layoutSwitcher;
+    }
+
     public Map<LayoutType, LayoutBundle> giveLayouts() {
         return layouts;
     }
@@ -65,18 +69,6 @@ public class LayoutManager implements Manager {
             }
         });
         return foundInputs;
-    }
-
-    public ArrayList<ComboBox> findComboBoxByType(ComboBoxType comboBoxType) {
-        ArrayList<ComboBox> foundBoxes = new ArrayList<>();
-        layouts.forEach((type, bundle) -> {
-            Map<ComboBoxType, ComboBox> boxes = bundle.getComboBoxes();
-            if (boxes.containsKey(comboBoxType)) {
-                ComboBox foundBox = boxes.get(comboBoxType);
-                foundBoxes.add(foundBox);
-            }
-        });
-        return foundBoxes;
     }
 
     public Map<LayoutType, GridPane> getDisplays() {
