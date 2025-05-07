@@ -26,12 +26,11 @@ public class LayoutSwitcher {
     }
 
     private void initialize() {
-        wireButtons();
+        wireMenuButtons();
         switchLayout(LayoutType.todo);
     }
 
-    // Could this work with a list of only the menu buttons?
-    private void wireButtons() {
+    private void wireMenuButtons() {
         layouts.forEach((type, layoutBundle) -> {
             matchButtonsToLayout(layoutBundle.getButtons());
         });

@@ -10,81 +10,49 @@ import javafx.scene.control.ButtonBase;
 import javafx.scene.control.*;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class MethodService {
-    // Streamline these lists to be maps of Layouts, Button types, and buttons.
-    private ArrayList<ButtonBase> saveButtons;
-    private ArrayList<ButtonBase> searchButtons;
-    private ArrayList<TextInputControl> tagInputs;
-    private ArrayList<TextInputControl> tagSearch;
-    private ArrayList<TextInputControl> titleInputs;
-    private ArrayList<TextInputControl> dueDateInputs;
-    private ArrayList<TextInputControl> descriptionInputs;
+    private final Map<LayoutType, Map<TypeOfButton, ButtonBase>> buttons;
+    private final Map<LayoutType, Map<InputFieldType, TextInputControl>> inputs;
     private ViewPort viewController;
     private Interactor inputInteractor;
-    // Move the LayoutSwitcher here from LayoutManager and centralize wiring here
     private LayoutSwitcher layoutSwitcher;
 
-    public MethodService(LayoutSwitcher switcher, ArrayList<ButtonBase> saveButtons, ArrayList<ButtonBase> searchButtons, ArrayList<TextInputControl> tagInputs, ArrayList<TextInputControl> tagSearch, ArrayList<TextInputControl> titleInputs, ArrayList<TextInputControl> dueDateInputs, ArrayList<TextInputControl> descriptionInputs, ViewPort viewController, Interactor inputInteractor) {
-        layoutSwitcher = switcher;
-        this.saveButtons = saveButtons;
-        this.searchButtons = searchButtons;
-        this.tagInputs = tagInputs;
-        this.tagSearch = tagSearch;
-        this.titleInputs = titleInputs;
-        this.dueDateInputs = dueDateInputs;
-        this.descriptionInputs = descriptionInputs;
+    public MethodService(Map<LayoutType, Map<TypeOfButton, ButtonBase>> buttons, Map<LayoutType, Map<InputFieldType, TextInputControl>> inputs, LayoutSwitcher layoutSwitcher, ViewPort viewController, Interactor inputInteractor) {
+        this.layoutSwitcher = layoutSwitcher;
+        this.buttons = buttons;
+        this.inputs = inputs;
         this.viewController = viewController;
         this.inputInteractor = inputInteractor;
     }
 
     public void setUpStatic() {
-        wireButtons(TypeOfButton.save);
-        wireButtons(TypeOfButton.search);
-        wireTextInputs(InputFieldType.title, inputInteractor.getProperty(InputStringType.title));
-        wireTextInputs(InputFieldType.dueDate, inputInteractor.getProperty(InputStringType.date));
-        wireTextInputs(InputFieldType.description, inputInteractor.getProperty(InputStringType.description));
-        wireTextInputs(InputFieldType.tagInput, inputInteractor.getProperty(InputStringType.tag));
-        wireTextInputs(InputFieldType.tagSearch, inputInteractor.getProperty(InputStringType.tagSearch));
+        wireSaveTask(buttons.get(LayoutType.input).get(TypeOfButton.save));
+        wireSearchTag(buttons.get(LayoutType.filter).get(TypeOfButton.search));
+        wireTextInput(inputs.get(LayoutType.input).get(InputFieldType.title), inputInteractor.getProperty(InputStringType.title));
+        wireTextInput(inputs.get(LayoutType.input).get(InputFieldType.dueDate), inputInteractor.getProperty(InputStringType.date));
+        wireTextInput(inputs.get(LayoutType.input).get(InputFieldType.description), inputInteractor.getProperty(InputStringType.description));
+        wireTextInput(inputs.get(LayoutType.input).get(InputFieldType.tagInput), inputInteractor.getProperty(InputStringType.tag));
+        wireTextInput(inputs.get(LayoutType.filter).get(InputFieldType.tagSearch), inputInteractor.getProperty(InputStringType.tagSearch));
     }
 
-    private void wireTextInputs(InputFieldType fieldType, StringProperty stringProperty) {
-        switch (fieldType) {
-            case title -> {
-                titleInputs.forEach(input -> input.textProperty().bindBidirectional(stringProperty));
-            }
-            case dueDate -> {
-                dueDateInputs.forEach(input -> input.textProperty().bindBidirectional(stringProperty));
-            }
-            case description -> {
-                descriptionInputs.forEach(input -> input.textProperty().bindBidirectional(stringProperty));
-            }
-            case tagInput -> {
-                tagInputs.forEach(input -> input.textProperty().bindBidirectional(stringProperty));
-            }
-            case tagSearch -> {
-                tagSearch.forEach(input -> input.textProperty().bindBidirectional(stringProperty));
-            }
-        }
+    private void wireTextInput(TextInputControl input, StringProperty stringProperty) {
+        input.textProperty().bindBidirectional(stringProperty);
     }
 
-    // Am I ever going to call this with something other than 'save'?
-    // If not, consider renaming it to wireSaveButtons and make it do just that
-    private void wireButtons(TypeOfButton typeOfButton) {
-        switch (typeOfButton) {
-            case save -> {
-                saveButtons.forEach(button -> button.setOnAction(e -> {
-                    Task newTask = inputInteractor.createTaskFromInput();
-                    viewController.addToDisplay(LayoutType.todo, newTask);
-                }));
-            }
-            case search -> {
-                searchButtons.forEach(button -> button.setOnAction(event -> {
-                    ArrayList<Task> foundTasks = inputInteractor.searchTag();
-                    viewController.addToDisplay(LayoutType.filterDisplay, foundTasks);
-                    layoutSwitcher.switchLayout(LayoutType.filterDisplay);
-                }));
-            }
-        }
+    private void wireSaveTask(ButtonBase button) {
+        button.setOnAction(event -> {
+            Task task = inputInteractor.createTaskFromInput();
+            viewController.addToDisplay(LayoutType.todo, task);
+        });
+    }
+
+    private void wireSearchTag(ButtonBase button) {
+        button.setOnAction(event -> {
+            ArrayList<Task> foundTasks = inputInteractor.searchTag();
+            viewController.addToDisplay(LayoutType.filterDisplay, foundTasks);
+            layoutSwitcher.switchLayout(LayoutType.filterDisplay);
+        });
     }
 }
