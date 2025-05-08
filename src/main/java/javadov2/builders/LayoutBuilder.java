@@ -1,6 +1,5 @@
 package javadov2.builders;
 
-import javadov2.enums.ComboBoxType;
 import javadov2.enums.InputFieldType;
 import javadov2.enums.LayoutType;
 import javadov2.enums.TypeOfButton;
@@ -9,8 +8,6 @@ import javadov2.objects.ButtonBundle;
 import javadov2.objects.InputBundle;
 import javadov2.objects.LayoutBundle;
 import javadov2.utilities.BuilderUtility;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -39,6 +36,7 @@ import java.util.Map;
         map.put(LayoutType.complete, complete());
         map.put(LayoutType.filter, filter());
         map.put(LayoutType.filterDisplay, filterDisplay());
+        map.put(LayoutType.edit, edit());
         return map;
     }
 
@@ -67,6 +65,26 @@ import java.util.Map;
 
         ButtonBundle buttonBundle = leftMenuPanel();
         buttonBundle.addButton(TypeOfButton.save, saveButton);
+
+        BorderPane borderPane = new BorderPane();
+        borderPane.setLeft(buttonBundle.getContainer());
+        borderPane.setCenter(inputContainer);
+        borderPane.setBottom(bottom);
+        return new LayoutBundle(borderPane, buttonBundle.getButtons(), inputBundle.getInputs(), inputContainer);
+    }
+
+    private LayoutBundle edit() {
+        GridPane inputContainer = new GridPane();
+        InputBundle inputBundle = inputPanel();
+        inputContainer.addRow(0, builderUtility.makeStylizedLabel("Title", "strong"), inputBundle.findInputByType(InputFieldType.title));
+        inputContainer.addRow(1, builderUtility.makeStylizedLabel("Due date", "strong"), inputBundle.findInputByType(InputFieldType.dueDate));
+        inputContainer.addRow(2, builderUtility.makeStylizedLabel("Description", "strong"), inputBundle.findInputByType(InputFieldType.description));
+        inputContainer.addRow(3, builderUtility.makeStylizedLabel("Tag", "strong"), inputBundle.findInputByType(InputFieldType.tagInput));
+        Button editButton = builderUtility.makeStylizedButton("Save", "form-btn", "save");
+        HBox bottom = new HBox(editButton);
+
+        ButtonBundle buttonBundle = leftMenuPanel();
+        buttonBundle.addButton(TypeOfButton.edit, editButton);
 
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(buttonBundle.getContainer());

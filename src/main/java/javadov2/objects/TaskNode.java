@@ -1,14 +1,12 @@
 package javadov2.objects;
 
 import javadov2.enums.TypeOfButton;
-import javadov2.interfaces.NodeMethod;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
-import java.util.EnumMap;
 import java.util.Map;
 
 public class TaskNode {
@@ -20,17 +18,17 @@ public class TaskNode {
     Node node;
     Map<TypeOfButton, ButtonBase> buttons;
 
-    public TaskNode(Task task, NodeMethod onComplete) {
+    public TaskNode(Task task) {
         this.task = task;
         title = new Label(task.getTitle());
         dueDate = new Label(task.getDueDate());
         description = new Label(task.getDescription());
         tag = new Label(task.getTag());
         buttons = Map.of(
-            TypeOfButton.complete, new Button("mark complete")
+            TypeOfButton.complete, new Button("mark complete"),
+            TypeOfButton.editMenu, new Button("edit")
         );
-        buttons.get(TypeOfButton.complete).setOnAction(e -> onComplete.onPress(task));
-        node = new HBox(title, dueDate, description, tag, getButton(TypeOfButton.complete));
+        node = new HBox(title, dueDate, description, tag, getButton(TypeOfButton.complete), getButton(TypeOfButton.editMenu));
     }
 
     public Node getTitle() {

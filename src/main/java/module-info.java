@@ -12,4 +12,5 @@ module javadov2 {
     exports javadov2.utilities;
     exports javadov2.objects;
     exports javadov2.interfaces;
+    exports javadov2.methods;
 }

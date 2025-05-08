@@ -4,6 +4,7 @@ import javadov2.enums.*;
 import javadov2.interfaces.Interactor;
 import javadov2.interfaces.ViewPort;
 import javadov2.objects.Task;
+import javadov2.objects.TaskNode;
 import javadov2.utilities.LayoutSwitcher;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.ButtonBase;
@@ -27,13 +28,17 @@ public class MethodService {
         this.inputInteractor = inputInteractor;
     }
 
-    public void setUpStatic() {
+    public void wireStaticButtonsAndInput() {
         wireSaveTask(buttons.get(LayoutType.input).get(TypeOfButton.save));
         wireSearchTag(buttons.get(LayoutType.filter).get(TypeOfButton.search));
         wireTextInput(inputs.get(LayoutType.input).get(InputFieldType.title), inputInteractor.getProperty(InputStringType.title));
         wireTextInput(inputs.get(LayoutType.input).get(InputFieldType.dueDate), inputInteractor.getProperty(InputStringType.date));
         wireTextInput(inputs.get(LayoutType.input).get(InputFieldType.description), inputInteractor.getProperty(InputStringType.description));
         wireTextInput(inputs.get(LayoutType.input).get(InputFieldType.tagInput), inputInteractor.getProperty(InputStringType.tag));
+        wireTextInput(inputs.get(LayoutType.edit).get(InputFieldType.title), inputInteractor.getProperty(InputStringType.title));
+        wireTextInput(inputs.get(LayoutType.edit).get(InputFieldType.dueDate), inputInteractor.getProperty(InputStringType.date));
+        wireTextInput(inputs.get(LayoutType.edit).get(InputFieldType.description), inputInteractor.getProperty(InputStringType.description));
+        wireTextInput(inputs.get(LayoutType.edit).get(InputFieldType.tagInput), inputInteractor.getProperty(InputStringType.tag));
         wireTextInput(inputs.get(LayoutType.filter).get(InputFieldType.tagSearch), inputInteractor.getProperty(InputStringType.tagSearch));
     }
 
@@ -45,6 +50,9 @@ public class MethodService {
         button.setOnAction(event -> {
             Task task = inputInteractor.createTaskFromInput();
             viewController.addToDisplay(LayoutType.todo, task);
+            TaskNode addedTask = viewController.getShownTask(LayoutType.todo, task);
+            wireCompleteButton(addedTask.getButton(TypeOfButton.complete), task);
+            wireEditButton(addedTask.getButton(TypeOfButton.editMenu), task);
         });
     }
 
@@ -53,6 +61,31 @@ public class MethodService {
             ArrayList<Task> foundTasks = inputInteractor.searchTag();
             viewController.addToDisplay(LayoutType.filterDisplay, foundTasks);
             layoutSwitcher.switchLayout(LayoutType.filterDisplay);
+        });
+    }
+
+    private void wireCompleteButton(ButtonBase button, Task task) {
+        button.setOnAction(event -> {
+            task.changeCompleted(!task.getCompletion());
+            if (task.getCompletion()) {
+                System.out.println(task.getCompletion());
+                viewController.addToDisplay(LayoutType.complete, task);
+                viewController.removeFromDisplay(LayoutType.todo, task);
+            } else {
+                System.out.println(task.getCompletion());
+                viewController.addToDisplay(LayoutType.todo, task);
+                viewController.removeFromDisplay(LayoutType.complete, task);
+            }
+        });
+    }
+
+    private void wireEditButton(ButtonBase button, Task task) {
+        button.setOnAction(event -> {
+            layoutSwitcher.switchLayout(LayoutType.edit);
+            inputInteractor.getProperty(InputStringType.title).setValue(task.getTitle());
+            inputInteractor.getProperty(InputStringType.date).setValue(task.getDueDate());
+            inputInteractor.getProperty(InputStringType.description).setValue(task.getDescription());
+            inputInteractor.getProperty(InputStringType.tag).setValue(task.getTag());
         });
     }
 }

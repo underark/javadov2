@@ -38,6 +38,10 @@ public class InputInteractor implements Interactor {
         return task;
     }
 
+    public void editTask() {
+
+    }
+
     public void markTaskCompleted(Task task) {
         taskService.markCompleted(task);
     }

@@ -8,4 +8,6 @@ public enum TypeOfButton {
     save,
     complete,
     search,
+    edit,
+    editMenu
 }
