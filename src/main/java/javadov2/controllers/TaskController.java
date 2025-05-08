@@ -1,6 +1,7 @@
 package javadov2.controllers;
 
 import javadov2.objects.Task;
+import javadov2.objects.TaskInfo;
 
 import java.util.ArrayList;
 
@@ -34,5 +35,14 @@ public class TaskController {
         } else {
             return "Task marked as incomplete";
         }
+    }
+
+    public Task editTask(Task task, TaskInfo taskInfo) {
+        Task oldTask = taskList.get(taskList.indexOf(task));
+        oldTask.setTitle(taskInfo.title());
+        oldTask.setDueDate(taskInfo.dueDate());
+        oldTask.setDescription(taskInfo.description());
+        oldTask.setTag(taskInfo.tag());
+        return oldTask;
     }
 }

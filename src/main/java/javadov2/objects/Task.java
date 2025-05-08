@@ -40,4 +40,20 @@ public class Task {
         this.completed = completed;
         return getCompletion();
     }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDueDate(String date) {
+        this.dueDate = date;
+    }
+
+    public void setDescription(String text) {
+        this.description = text;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
+    }
 }

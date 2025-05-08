@@ -3,6 +3,7 @@ package javadov2.controllers;
 import javadov2.enums.InputStringType;
 import javadov2.interfaces.Interactor;
 import javadov2.objects.Task;
+import javadov2.objects.TaskInfo;
 import javadov2.service.TaskService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -38,8 +39,8 @@ public class InputInteractor implements Interactor {
         return task;
     }
 
-    public void editTask() {
-
+    public Task editTask(Task task) {
+        return taskService.editTask(task, new TaskInfo(titleProperty.getValue(), dateProperty.getValue(), descriptionProperty.getValue(), tagProperty.getValue()));
     }
 
     public void markTaskCompleted(Task task) {

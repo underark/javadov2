@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public interface Interactor {
     Task createTaskFromInput();
+    Task editTask(Task task);
     void markTaskCompleted(Task task);
     StringProperty getProperty(InputStringType type);
     ArrayList<Task> searchTag();

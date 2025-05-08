@@ -50,9 +50,10 @@ public class MethodService {
         button.setOnAction(event -> {
             Task task = inputInteractor.createTaskFromInput();
             viewController.addToDisplay(LayoutType.todo, task);
-            TaskNode addedTask = viewController.getShownTask(LayoutType.todo, task);
+            TaskNode addedTask = viewController.getShownTask(task);
             wireCompleteButton(addedTask.getButton(TypeOfButton.complete), task);
-            wireEditButton(addedTask.getButton(TypeOfButton.editMenu), task);
+            wireEditMenuButton(addedTask.getButton(TypeOfButton.editMenu), task);
+            layoutSwitcher.switchLayout(LayoutType.todo);
         });
     }
 
@@ -68,24 +69,33 @@ public class MethodService {
         button.setOnAction(event -> {
             task.changeCompleted(!task.getCompletion());
             if (task.getCompletion()) {
-                System.out.println(task.getCompletion());
                 viewController.addToDisplay(LayoutType.complete, task);
                 viewController.removeFromDisplay(LayoutType.todo, task);
             } else {
-                System.out.println(task.getCompletion());
                 viewController.addToDisplay(LayoutType.todo, task);
                 viewController.removeFromDisplay(LayoutType.complete, task);
             }
         });
     }
 
-    private void wireEditButton(ButtonBase button, Task task) {
+    private void wireEditMenuButton(ButtonBase button, Task task) {
         button.setOnAction(event -> {
             layoutSwitcher.switchLayout(LayoutType.edit);
             inputInteractor.getProperty(InputStringType.title).setValue(task.getTitle());
             inputInteractor.getProperty(InputStringType.date).setValue(task.getDueDate());
             inputInteractor.getProperty(InputStringType.description).setValue(task.getDescription());
             inputInteractor.getProperty(InputStringType.tag).setValue(task.getTag());
+            wireEditButton(buttons.get(LayoutType.edit).get(TypeOfButton.edit), task);
+        });
+    }
+
+    private void wireEditButton(ButtonBase button, Task task) {
+        button.setOnAction(event -> {
+            Task editedTask = inputInteractor.editTask(task);
+            viewController.removeFromDisplay(task);
+            viewController.addToDisplay(LayoutType.todo, editedTask);
+            task.changeCompleted(false);
+            layoutSwitcher.switchLayout(LayoutType.todo);
         });
     }
 }

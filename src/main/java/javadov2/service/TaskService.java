@@ -3,6 +3,7 @@ package javadov2.service;
 
 import javadov2.controllers.TaskController;
 import javadov2.objects.Task;
+import javadov2.objects.TaskInfo;
 import javadov2.utilities.LocalDateUtility;
 
 import java.util.ArrayList;
@@ -24,6 +25,15 @@ public class TaskService {
         return result;
     }
 
+    // Need to validate whether title input is blank or not too
+    public Task editTask(Task task, TaskInfo taskInfo) {
+        String result = localDateUtility.checkDateInput(new Task(taskInfo.title(), taskInfo.dueDate(), taskInfo.description(), taskInfo.tag()));
+        if (Objects.equals(result, "Task added to list")) {
+            return taskController.editTask(task, taskInfo);
+        }
+        return task;
+    }
+
     private String deleteTask(Task task) {
         return taskController.deleteTask(task);
     }
@@ -40,20 +50,6 @@ public class TaskService {
         ArrayList<Task> tasks = getAllTasks();
         return new ArrayList<>(tasks.stream()
                 .filter(e -> localDateUtility.isOverdue(e))
-                .toList());
-    }
-
-    private ArrayList<Task> getIncompleteTasks() {
-        ArrayList<Task> tasks = getAllTasks();
-        return new ArrayList<>(tasks.stream()
-                .filter(e -> !e.getCompletion())
-                .toList());
-    }
-
-    public ArrayList<Task> findCompleteTasks() {
-        ArrayList<Task> tasks = getAllTasks();
-        return new ArrayList<>(tasks.stream()
-                .filter(Task::getCompletion)
                 .toList());
     }
 
