@@ -3,6 +3,7 @@ package javadov2.service;
 import javadov2.enums.*;
 import javadov2.interfaces.Interactor;
 import javadov2.interfaces.ViewPort;
+import javadov2.objects.ResultInfo;
 import javadov2.objects.Task;
 import javadov2.objects.TaskNode;
 import javadov2.utilities.LayoutSwitcher;
@@ -12,6 +13,7 @@ import javafx.scene.control.*;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Objects;
 
 public class MethodService {
     private final Map<LayoutType, Map<TypeOfButton, ButtonBase>> buttons;
@@ -48,12 +50,17 @@ public class MethodService {
 
     private void wireSaveTask(ButtonBase button) {
         button.setOnAction(event -> {
-            Task task = inputInteractor.createTaskFromInput();
-            viewController.addToDisplay(LayoutType.todo, task);
-            TaskNode addedTask = viewController.getShownTask(task);
-            wireCompleteButton(addedTask.getButton(TypeOfButton.complete), task);
-            wireEditMenuButton(addedTask.getButton(TypeOfButton.editMenu), task);
-            layoutSwitcher.switchLayout(LayoutType.todo);
+            ResultInfo result = inputInteractor.createTaskFromInput();
+            if (result.task() != null) {
+                layoutSwitcher.switchLayout(LayoutType.todo);
+                viewController.addToDisplay(LayoutType.todo, result.task());
+                TaskNode addedTask = viewController.getShownTask(result.task());
+                wireCompleteButton(addedTask.getButton(TypeOfButton.complete), result.task());
+                wireEditMenuButton(addedTask.getButton(TypeOfButton.editMenu), result.task());
+                viewController.displayToast(result.message());
+            } else {
+                viewController.displayToast(result.message());
+            }
         });
     }
 

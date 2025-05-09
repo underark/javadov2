@@ -21,7 +21,7 @@ import java.util.Map;
 // Makes the Layouts that we are going to store in our LayoutManager
     public class LayoutBuilder implements Builder {
         private final StackPane root;
-        private final Node toastContainer;
+        private final VBox toastContainer;
         private BuilderUtility builderUtility;
 
         public LayoutBuilder() {
@@ -46,7 +46,7 @@ import java.util.Map;
         return root;
     }
 
-    public Node giveToastContainer() {
+    public VBox giveToastContainer() {
         return toastContainer;
     }
 
@@ -169,7 +169,7 @@ import java.util.Map;
         return new InputBundle(inputs, new HBox());
     }
 
-    private Node toastContainer() {
+    private VBox toastContainer() {
         VBox container = new VBox();
         container.setAlignment(Pos.BOTTOM_RIGHT);
         container.setSpacing(15);

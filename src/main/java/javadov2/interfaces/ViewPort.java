@@ -13,4 +13,5 @@ public interface ViewPort {
     void removeFromDisplay(LayoutType type, Task task);
     void removeFromDisplay(Task task);
     TaskNode getShownTask(Task task);
+    void displayToast(String string);
 }

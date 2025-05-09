@@ -14,9 +14,9 @@ import java.util.Map;
 public class LayoutSwitcher {
     private final StackPane root;
     private final Map<LayoutType, LayoutBundle> layouts;
-    private final Node toastContainer;
+    private final VBox toastContainer;
 
-    public LayoutSwitcher(StackPane root, Node toastContainer, Map<LayoutType, LayoutBundle> layouts) {
+    public LayoutSwitcher(StackPane root, VBox toastContainer, Map<LayoutType, LayoutBundle> layouts) {
         this.root = root;
         this.toastContainer = toastContainer;
         this.layouts = layouts;

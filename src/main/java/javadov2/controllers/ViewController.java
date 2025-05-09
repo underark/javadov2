@@ -6,21 +6,25 @@ import javadov2.interfaces.ViewPort;
 import javadov2.objects.Task;
 import javadov2.objects.TaskNode;
 import javadov2.utilities.TaskNodeFactory;
-import javafx.scene.Node;
+import javadov2.utilities.Toaster;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 import java.util.*;
 
 public class ViewController implements ViewPort {
-    private final Node toastContainer;
+    private final VBox toastContainer;
     private final Map<LayoutType, GridPane> displays;
     private Map<LayoutType, Map<Task, TaskNode>> shownTasks;
     private TaskNodeFactory taskNodeFactory;
+    private Toaster toaster;
 
-    public ViewController(Map<LayoutType, GridPane> displays, Node toastContainer) {
+    public ViewController(Map<LayoutType, GridPane> displays, VBox toastContainer) {
         this.displays = displays;
         this.toastContainer = toastContainer;
         taskNodeFactory = new TaskNodeFactory();
+        toaster = new Toaster(toastContainer);
         shownTasks = new HashMap<>();
         for (LayoutType type : LayoutType.values()) {
             shownTasks.put(type, new HashMap<>());
@@ -79,6 +83,7 @@ public class ViewController implements ViewPort {
     }
 
     public void displayToast(String string) {
-
+        HBox toast = toaster.makeToastMessage(string);
+        toastContainer.getChildren().add(toast);
     }
 }

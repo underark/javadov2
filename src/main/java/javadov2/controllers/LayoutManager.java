@@ -6,18 +6,18 @@ import javadov2.enums.TypeOfButton;
 import javadov2.interfaces.Builder;
 import javadov2.interfaces.Manager;
 import javadov2.objects.LayoutBundle;
-import javafx.scene.Node;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.util.EnumMap;
 import java.util.Map;
 
 public class LayoutManager implements Manager {
     private final StackPane root;
-    private final Node toastContainer;
+    private final VBox toastContainer;
     private final Map<LayoutType, LayoutBundle> layouts;
 
     public LayoutManager(Builder layoutBuilder) {
@@ -30,7 +30,7 @@ public class LayoutManager implements Manager {
         return root;
     }
 
-    public Node giveToastContainer() {
+    public VBox giveToastContainer() {
         return toastContainer;
     }
 

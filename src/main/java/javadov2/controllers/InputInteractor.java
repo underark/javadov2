@@ -2,6 +2,7 @@ package javadov2.controllers;
 
 import javadov2.enums.InputStringType;
 import javadov2.interfaces.Interactor;
+import javadov2.objects.ResultInfo;
 import javadov2.objects.Task;
 import javadov2.objects.TaskInfo;
 import javadov2.service.TaskService;
@@ -9,6 +10,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 
 public class InputInteractor implements Interactor {
@@ -28,15 +30,19 @@ public class InputInteractor implements Interactor {
         tagSearchProperty = new SimpleStringProperty();
     }
 
-    public Task createTaskFromInput() {
+    public ResultInfo createTaskFromInput() {
         String title = getStringValue(InputStringType.title);
+        if (title == null) {
+            return new ResultInfo("Title cannot be blank", null);
+        }
         String date = getStringValue(InputStringType.date);
+        if (date == null) {
+            return new ResultInfo("Date cannot be blank", null);
+        }
         String description = getStringValue(InputStringType.description);
         String tag = getStringValue(InputStringType.tag);
         Task task = new Task(title, date, description, tag);
-        System.out.println(tag);
-        String result = taskService.saveTask(task);
-        return task;
+        return taskService.saveTask(task);
     }
 
     public Task editTask(Task task) {
