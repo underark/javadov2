@@ -20,11 +20,13 @@ import java.util.Map;
 
 // Makes the Layouts that we are going to store in our LayoutManager
     public class LayoutBuilder implements Builder {
-        private StackPane root;
+        private final StackPane root;
+        private final Node toastContainer;
         private BuilderUtility builderUtility;
 
         public LayoutBuilder() {
             root = new StackPane();
+            toastContainer = toastContainer();
             builderUtility = new BuilderUtility();
         }
 
@@ -42,6 +44,10 @@ import java.util.Map;
 
     public StackPane giveRoot() {
         return root;
+    }
+
+    public Node giveToastContainer() {
+        return toastContainer;
     }
 
     private LayoutBundle toDo() {

@@ -21,10 +21,9 @@ public class Main extends Application {
     public void start(Stage stage) {
         LayoutBuilder layoutBuilder = new LayoutBuilder();
         LayoutManager layoutManager = new LayoutManager(layoutBuilder);
-        layoutManager.initialize();
-        LayoutSwitcher layoutSwitcher = new LayoutSwitcher(layoutManager.giveRoot(), layoutManager.giveLayouts());
+        LayoutSwitcher layoutSwitcher = new LayoutSwitcher(layoutManager.giveRoot(), layoutManager.giveToastContainer(), layoutManager.giveLayouts());
         Interactor inputInteractor = new InputInteractor();
-        ViewPort viewController = new ViewController(layoutManager.giveDisplays());
+        ViewPort viewController = new ViewController(layoutManager.giveDisplays(), layoutManager.giveToastContainer());
         MethodService methodService = new MethodService(layoutManager.giveButtons(), layoutManager.giveInputs(), layoutSwitcher, viewController, inputInteractor);
         methodService.wireStaticButtonsAndInput();
 

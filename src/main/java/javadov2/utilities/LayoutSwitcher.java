@@ -7,22 +7,25 @@ import javafx.scene.Node;
 
 import javafx.scene.control.ButtonBase;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.util.Map;
 
 public class LayoutSwitcher {
     private final StackPane root;
     private final Map<LayoutType, LayoutBundle> layouts;
+    private final Node toastContainer;
 
-    public LayoutSwitcher(StackPane root, Map<LayoutType, LayoutBundle> layouts) {
+    public LayoutSwitcher(StackPane root, Node toastContainer, Map<LayoutType, LayoutBundle> layouts) {
         this.root = root;
+        this.toastContainer = toastContainer;
         this.layouts = layouts;
         initialize();
     }
 
     public void switchLayout(LayoutType type) {
         Node layout = layouts.get(type).getPanel();
-        root.getChildren().setAll(layout);
+        root.getChildren().setAll(layout, toastContainer);
     }
 
     private void initialize() {

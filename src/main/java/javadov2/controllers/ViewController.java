@@ -6,17 +6,20 @@ import javadov2.interfaces.ViewPort;
 import javadov2.objects.Task;
 import javadov2.objects.TaskNode;
 import javadov2.utilities.TaskNodeFactory;
+import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 
 import java.util.*;
 
 public class ViewController implements ViewPort {
-    private Map<LayoutType, GridPane> displays;
+    private final Node toastContainer;
+    private final Map<LayoutType, GridPane> displays;
     private Map<LayoutType, Map<Task, TaskNode>> shownTasks;
     private TaskNodeFactory taskNodeFactory;
 
-    public ViewController(Map<LayoutType, GridPane> displays) {
+    public ViewController(Map<LayoutType, GridPane> displays, Node toastContainer) {
         this.displays = displays;
+        this.toastContainer = toastContainer;
         taskNodeFactory = new TaskNodeFactory();
         shownTasks = new HashMap<>();
         for (LayoutType type : LayoutType.values()) {
@@ -73,5 +76,9 @@ public class ViewController implements ViewPort {
             }
         }
         return null;
+    }
+
+    public void displayToast(String string) {
+
     }
 }

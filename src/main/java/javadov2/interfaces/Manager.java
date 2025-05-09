@@ -6,6 +6,5 @@ import javadov2.objects.LayoutBundle;
 import java.util.Map;
 
 public interface Manager {
-    void initialize();
     Map<LayoutType, LayoutBundle> giveLayouts();
 }
