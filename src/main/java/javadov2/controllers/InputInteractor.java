@@ -51,6 +51,7 @@ public class InputInteractor implements Interactor {
         if (dateProperty.getValue() == null) {
             return new ResultInfo("Date cannot be blank", null);
         }
+
         return taskService.editTask(task, new TaskInfo(titleProperty.getValue(), dateProperty.getValue(), descriptionProperty.getValue(), tagProperty.getValue()));
     }
 

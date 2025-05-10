@@ -38,11 +38,12 @@ public class TaskController {
     }
 
     public Task editTask(Task task, TaskInfo taskInfo) {
-        Task oldTask = taskList.get(taskList.indexOf(task));
-        oldTask.setTitle(taskInfo.title());
-        oldTask.setDueDate(taskInfo.dueDate());
-        oldTask.setDescription(taskInfo.description());
-        oldTask.setTag(taskInfo.tag());
-        return oldTask;
+        Task editTask = taskList.get(taskList.indexOf(task));
+        editTask.setTitle(taskInfo.title());
+        editTask.setDueDate(taskInfo.dueDate());
+        editTask.setDescription(taskInfo.description());
+        editTask.setTag(taskInfo.tag());
+        editTask.changeCompleted(false);
+        return editTask;
     }
 }
