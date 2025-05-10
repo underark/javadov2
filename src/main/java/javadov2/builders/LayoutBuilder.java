@@ -38,6 +38,7 @@ import java.util.Map;
         map.put(LayoutType.complete, complete());
         map.put(LayoutType.filter, filter());
         map.put(LayoutType.filterDisplay, filterDisplay());
+        map.put(LayoutType.emptyFilter, emptyFilterDisplay());
         map.put(LayoutType.edit, edit());
         return map;
     }
@@ -113,12 +114,21 @@ import java.util.Map;
     }
 
     private LayoutBundle filterDisplay() {
-            GridPane container = new GridPane();
-            ButtonBundle buttonBundle = leftMenuPanel();
-            BorderPane borderPane = new BorderPane();
-            borderPane.setLeft(buttonBundle.getContainer());
-            borderPane.setCenter(container);
-            return new LayoutBundle(borderPane, buttonBundle.getButtons(), Map.of(), container);
+        GridPane container = new GridPane();
+        ButtonBundle buttonBundle = leftMenuPanel();
+        BorderPane borderPane = new BorderPane();
+        borderPane.setLeft(buttonBundle.getContainer());
+        borderPane.setCenter(container);
+        return new LayoutBundle(borderPane, buttonBundle.getButtons(), Map.of(), container);
+    }
+
+    private LayoutBundle emptyFilterDisplay() {
+        ButtonBundle menu = leftMenuPanel();
+        HBox center = new HBox(builderUtility.makeStylizedLabel("No tasks found!", "strong"));
+        BorderPane borderPane = new BorderPane();
+        borderPane.setLeft(menu.getContainer());
+        borderPane.setCenter(center);
+        return new LayoutBundle(borderPane, menu.getButtons(), Map.of(), new GridPane());
     }
 
     private LayoutBundle overdue() {

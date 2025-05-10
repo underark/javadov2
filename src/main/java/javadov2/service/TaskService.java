@@ -9,7 +9,6 @@ import javadov2.utilities.LocalDateUtility;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Optional;
 
 public class TaskService {
     private TaskController taskController = new TaskController();
@@ -29,12 +28,12 @@ public class TaskService {
     }
 
     // Need to validate whether title input is blank or not too
-    public Task editTask(Task task, TaskInfo taskInfo) {
+    public ResultInfo editTask(Task task, TaskInfo taskInfo) {
         String result = localDateUtility.checkDateInput(new Task(taskInfo.title(), taskInfo.dueDate(), taskInfo.description(), taskInfo.tag()));
         if (result.equalsIgnoreCase("Task added to list")) {
-            return taskController.editTask(task, taskInfo);
+            return new ResultInfo("Task edited", taskController.editTask(task, taskInfo));
         }
-        return task;
+        return new ResultInfo(result, null);
     }
 
     private String deleteTask(Task task) {

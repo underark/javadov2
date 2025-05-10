@@ -7,5 +7,6 @@ public enum LayoutType {
     complete,
     filter,
     filterDisplay,
+    emptyFilter,
     edit,
 }

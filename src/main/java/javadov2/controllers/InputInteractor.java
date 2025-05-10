@@ -10,8 +10,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.util.ArrayList;
-import java.util.Optional;
-
 
 public class InputInteractor implements Interactor {
     private TaskService taskService;
@@ -45,7 +43,14 @@ public class InputInteractor implements Interactor {
         return taskService.saveTask(task);
     }
 
-    public Task editTask(Task task) {
+    public ResultInfo editTask(Task task) {
+        if (titleProperty.getValue() == null) {
+            return new ResultInfo("Title cannot be blank", null);
+        }
+
+        if (dateProperty.getValue() == null) {
+            return new ResultInfo("Date cannot be blank", null);
+        }
         return taskService.editTask(task, new TaskInfo(titleProperty.getValue(), dateProperty.getValue(), descriptionProperty.getValue(), tagProperty.getValue()));
     }
 

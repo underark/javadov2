@@ -67,8 +67,12 @@ public class MethodService {
     private void wireSearchTag(ButtonBase button) {
         button.setOnAction(event -> {
             ArrayList<Task> foundTasks = inputInteractor.searchTag();
-            viewController.addToDisplay(LayoutType.filterDisplay, foundTasks);
-            layoutSwitcher.switchLayout(LayoutType.filterDisplay);
+            if (foundTasks.isEmpty()) {
+                layoutSwitcher.switchLayout(LayoutType.emptyFilter);
+            } else {
+                viewController.addToDisplay(LayoutType.filterDisplay, foundTasks);
+                layoutSwitcher.switchLayout(LayoutType.filterDisplay);
+            }
         });
     }
 
@@ -76,11 +80,15 @@ public class MethodService {
         button.setOnAction(event -> {
             task.changeCompleted(!task.getCompletion());
             if (task.getCompletion()) {
+                button.setText("Mark incomplete");
                 viewController.addToDisplay(LayoutType.complete, task);
                 viewController.removeFromDisplay(LayoutType.todo, task);
+                viewController.displayToast("Task marked completed!");
             } else {
+                button.setText("Mark complete");
                 viewController.addToDisplay(LayoutType.todo, task);
                 viewController.removeFromDisplay(LayoutType.complete, task);
+                viewController.displayToast("Task marked incomplete!");
             }
         });
     }
@@ -98,9 +106,9 @@ public class MethodService {
 
     private void wireEditButton(ButtonBase button, Task task) {
         button.setOnAction(event -> {
-            Task editedTask = inputInteractor.editTask(task);
+            ResultInfo editedTask = inputInteractor.editTask(task);
             viewController.removeFromDisplay(task);
-            viewController.addToDisplay(LayoutType.todo, editedTask);
+            viewController.addToDisplay(LayoutType.todo, editedTask.task());
             task.changeCompleted(false);
             layoutSwitcher.switchLayout(LayoutType.todo);
         });
