@@ -28,7 +28,14 @@ public class TaskNode {
             TypeOfButton.complete, new Button("mark complete"),
             TypeOfButton.editMenu, new Button("edit")
         );
+        buttons.forEach(((typeOfButton, button) -> {button.setVisible(false);}));
         node = new HBox(title, dueDate, description, tag, getButton(TypeOfButton.complete), getButton(TypeOfButton.editMenu));
+        node.setOnMouseEntered(event -> {
+            buttons.forEach((type, button) -> button.setVisible(true));
+        });
+        node.setOnMouseExited(event -> {
+            buttons.forEach((type, button) -> button.setVisible(false));
+        });
     }
 
     public Node getTitle() {
@@ -64,5 +71,9 @@ public class TaskNode {
 
     public Node getNode() {
         return node;
+    }
+
+    public void makeButtonsVisible() {
+        buttons.forEach((type, button) -> button.setVisible(true));
     }
 }

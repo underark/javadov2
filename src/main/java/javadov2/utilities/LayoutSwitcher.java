@@ -43,6 +43,7 @@ public class LayoutSwitcher {
         Map<TypeOfButton, LayoutType> map = Map.of(
                 TypeOfButton.homeMenu, LayoutType.todo,
                 TypeOfButton.inputMenu, LayoutType.input,
+                TypeOfButton.overdue, LayoutType.overdue,
                 TypeOfButton.complete, LayoutType.complete,
                 TypeOfButton.filter, LayoutType.filter
         );

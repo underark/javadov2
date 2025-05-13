@@ -4,6 +4,7 @@ module javadov2 {
     requires javafx.graphics;
     requires java.desktop;
     requires java.naming;
+    requires java.sql;
 
     exports javadov2.app;
     exports javadov2.controllers;

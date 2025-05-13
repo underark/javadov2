@@ -2,9 +2,11 @@ package javadov2.controllers;
 
 
 import javadov2.enums.LayoutType;
+import javadov2.enums.TypeOfButton;
 import javadov2.interfaces.ViewPort;
 import javadov2.objects.Task;
 import javadov2.objects.TaskNode;
+import javadov2.service.DBTaskService;
 import javadov2.utilities.TaskNodeFactory;
 import javadov2.utilities.Toaster;
 import javafx.scene.layout.GridPane;
@@ -20,7 +22,7 @@ public class ViewController implements ViewPort {
     private TaskNodeFactory taskNodeFactory;
     private Toaster toaster;
 
-    public ViewController(Map<LayoutType, GridPane> displays, VBox toastContainer) {
+    public ViewController(DBTaskService dbTaskService, Map<LayoutType, GridPane> displays, VBox toastContainer) {
         this.displays = displays;
         this.toastContainer = toastContainer;
         taskNodeFactory = new TaskNodeFactory();
@@ -29,6 +31,7 @@ public class ViewController implements ViewPort {
         for (LayoutType type : LayoutType.values()) {
             shownTasks.put(type, new HashMap<>());
         }
+        addToDisplay(LayoutType.todo, dbTaskService.getIncompleteTasks());
     }
 
     public void addToDisplay(LayoutType type, Task task) {
@@ -62,14 +65,19 @@ public class ViewController implements ViewPort {
         });
     }
 
-    public void addToDisplay(LayoutType type, ArrayList<Task> tasks) {
+    public void addToDisplay(LayoutType type, List<Task> tasks) {
+        Map<Task, TaskNode> nodeMap = new HashMap<>();
         displays.get(type).getChildren().clear();
         if (displays.containsKey(type)) {
             GridPane display = displays.get(type);
             List<TaskNode> taskNodes = tasks.stream()
                     .map(task -> taskNodeFactory.makeTaskNode(task))
                     .toList();
-            taskNodes.forEach(node -> display.addRow(display.getRowCount() + 1, node.getNode()));
+            taskNodes.forEach(node -> {
+                display.addRow(display.getRowCount() + 1, node.getNode());
+                nodeMap.put(node.getTask(), node);
+            });
+            shownTasks.put(type, nodeMap);
         }
     }
 
@@ -80,6 +88,12 @@ public class ViewController implements ViewPort {
             }
         }
         return null;
+    }
+
+    public Map<Task, TaskNode> getExistingTasks() {
+        Map<Task, TaskNode> map = new HashMap<>();
+        shownTasks.forEach((layout, tasks) -> map.putAll(tasks));
+        return map;
     }
 
     public void displayToast(String string) {

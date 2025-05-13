@@ -154,13 +154,15 @@ import java.util.Map;
         Button inputButton = builderUtility.makeStylizedButton("New task", "menu-btn", "input");
         Button completeButton = builderUtility.makeStylizedButton("Show complete", "menu-btn", "complete");
         Button filterButton = builderUtility.makeStylizedButton("Search tag", "menu-btn", "searchTag");
+        Button overdueButton = builderUtility.makeStylizedButton("Show overdue", "menu-btn", "overdue");
         VBox container = new VBox();
         container.getStyleClass().add("menu-box");
         Map<TypeOfButton, ButtonBase> buttons = new HashMap<>(Map.of(
                 TypeOfButton.homeMenu, homeButton,
                 TypeOfButton.inputMenu, inputButton,
                 TypeOfButton.complete, completeButton,
-                TypeOfButton.filter, filterButton
+                TypeOfButton.filter, filterButton,
+                TypeOfButton.overdue, overdueButton
         ));
         return new ButtonBundle(buttons, container);
     }

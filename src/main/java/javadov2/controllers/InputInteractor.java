@@ -5,14 +5,10 @@ import javadov2.interfaces.Interactor;
 import javadov2.objects.ResultInfo;
 import javadov2.objects.Task;
 import javadov2.objects.TaskInfo;
-import javadov2.service.TaskService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import java.util.ArrayList;
-
 public class InputInteractor implements Interactor {
-    private TaskService taskService;
     private final StringProperty titleProperty;
     private final StringProperty dateProperty;
     private final StringProperty descriptionProperty;
@@ -20,7 +16,6 @@ public class InputInteractor implements Interactor {
     private final StringProperty tagSearchProperty;
 
     public InputInteractor() {
-        taskService = new TaskService(new TaskController());
         titleProperty = new SimpleStringProperty();
         dateProperty = new SimpleStringProperty();
         descriptionProperty = new SimpleStringProperty();
@@ -28,39 +23,12 @@ public class InputInteractor implements Interactor {
         tagSearchProperty = new SimpleStringProperty();
     }
 
-    public ResultInfo createTaskFromInput() {
+    public TaskInfo getUserInput() {
         String title = getStringValue(InputStringType.title);
-        if (title == null) {
-            return new ResultInfo("Title cannot be blank", null);
-        }
         String date = getStringValue(InputStringType.date);
-        if (date == null) {
-            return new ResultInfo("Date cannot be blank", null);
-        }
         String description = getStringValue(InputStringType.description);
         String tag = getStringValue(InputStringType.tag);
-        Task task = new Task(title, date, description, tag);
-        return taskService.saveTask(task);
-    }
-
-    public ResultInfo editTask(Task task) {
-        if (titleProperty.getValue() == null) {
-            return new ResultInfo("Title cannot be blank", null);
-        }
-
-        if (dateProperty.getValue() == null) {
-            return new ResultInfo("Date cannot be blank", null);
-        }
-
-        return taskService.editTask(task, new TaskInfo(titleProperty.getValue(), dateProperty.getValue(), descriptionProperty.getValue(), tagProperty.getValue()));
-    }
-
-    public void markTaskCompleted(Task task) {
-        taskService.markCompleted(task);
-    }
-
-    public ArrayList<Task> searchTag() {
-        return taskService.searchTags(getStringValue(InputStringType.tagSearch));
+        return new TaskInfo(title, date, description, tag);
     }
 
     private String getStringValue(InputStringType type) {

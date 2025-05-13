@@ -1,19 +1,32 @@
 package javadov2.objects;
 
 public class Task {
+    private int id;
     private String title;
     private String dueDate;
     private String description;
     private String tag;
     private boolean completed;
 
-    public Task(String title, String dueDate, String description, String tag) {
-        //this.number = number;
+    public Task(int id, String title, String dueDate, String description, String tag) {
+        this.id = id;
         this.title = title;
         this.dueDate = dueDate;
         this.description = description;
         this.tag = tag;
         this.completed = false;
+    }
+
+    public Task(int id, String title, String dueDate, String description, String tag, boolean completed) {
+        this.id = id;
+        this.title = title;
+        this.dueDate = dueDate;
+        this.description = description;
+        this.tag = tag;
+        this.completed = completed;    }
+
+    public int getId() {
+        return id;
     }
 
     public String getTitle() {

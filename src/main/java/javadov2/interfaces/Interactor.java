@@ -1,17 +1,13 @@
 package javadov2.interfaces;
 
 import javadov2.enums.InputStringType;
-import javadov2.objects.ResultInfo;
-import javadov2.objects.Task;
+import javadov2.objects.TaskInfo;
 import javafx.beans.property.StringProperty;
 
-import java.util.ArrayList;
+
 
 
 public interface Interactor {
-    ResultInfo createTaskFromInput();
-    ResultInfo editTask(Task task);
-    void markTaskCompleted(Task task);
+    TaskInfo getUserInput();
     StringProperty getProperty(InputStringType type);
-    ArrayList<Task> searchTag();
 }

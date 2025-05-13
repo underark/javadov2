@@ -2,9 +2,11 @@ package javadov2.service;
 
 import javadov2.enums.*;
 import javadov2.interfaces.Interactor;
+import javadov2.interfaces.ObjectService;
 import javadov2.interfaces.ViewPort;
 import javadov2.objects.ResultInfo;
 import javadov2.objects.Task;
+import javadov2.objects.TaskInfo;
 import javadov2.objects.TaskNode;
 import javadov2.utilities.LayoutSwitcher;
 import javafx.beans.property.StringProperty;
@@ -18,17 +20,27 @@ public class MethodService {
     private final Map<LayoutType, Map<TypeOfButton, ButtonBase>> buttons;
     private final Map<LayoutType, Map<InputFieldType, TextInputControl>> inputs;
     private ViewPort viewController;
+    private ObjectService taskService;
     private Interactor inputInteractor;
     private LayoutSwitcher layoutSwitcher;
 
-    public MethodService(Map<LayoutType, Map<TypeOfButton, ButtonBase>> buttons, Map<LayoutType, Map<InputFieldType, TextInputControl>> inputs, LayoutSwitcher layoutSwitcher, ViewPort viewController, Interactor inputInteractor) {
+    public MethodService(Map<LayoutType, Map<TypeOfButton, ButtonBase>> buttons, Map<LayoutType, Map<InputFieldType, TextInputControl>> inputs, LayoutSwitcher layoutSwitcher, ViewPort viewController, Interactor inputInteractor, ObjectService taskService) {
         this.layoutSwitcher = layoutSwitcher;
         this.buttons = buttons;
         this.inputs = inputs;
         this.viewController = viewController;
         this.inputInteractor = inputInteractor;
+        this.taskService = taskService;
     }
 
+    public void wireExistingTaskButtons(Map<Task, TaskNode> tasks) {
+        tasks.forEach((task, node) -> {
+            Map<TypeOfButton, ButtonBase> buttons = node.getButtons();
+            buttons.forEach((type, button) -> matchButtonToWiring(type, button, node.getTask()));
+        });
+    }
+
+    // Make this into a pattern matching function?
     public void wireStaticButtonsAndInput() {
         wireSaveTask(buttons.get(LayoutType.input).get(TypeOfButton.save));
         wireSearchTag(buttons.get(LayoutType.filter).get(TypeOfButton.search));
@@ -49,13 +61,14 @@ public class MethodService {
 
     private void wireSaveTask(ButtonBase button) {
         button.setOnAction(event -> {
-            ResultInfo result = inputInteractor.createTaskFromInput();
+            TaskInfo info = inputInteractor.getUserInput();
+            ResultInfo result = taskService.saveTask(info);
             if (result.task() != null) {
-                layoutSwitcher.switchLayout(LayoutType.todo);
                 viewController.addToDisplay(LayoutType.todo, result.task());
                 TaskNode addedTask = viewController.getShownTask(result.task());
                 wireCompleteButton(addedTask.getButton(TypeOfButton.complete), result.task());
                 wireEditMenuButton(addedTask.getButton(TypeOfButton.editMenu), result.task());
+                layoutSwitcher.switchLayout(LayoutType.todo);
                 viewController.displayToast(result.message());
             } else {
                 viewController.displayToast(result.message());
@@ -65,30 +78,30 @@ public class MethodService {
 
     private void wireSearchTag(ButtonBase button) {
         button.setOnAction(event -> {
-            ArrayList<Task> foundTasks = inputInteractor.searchTag();
-            if (foundTasks.isEmpty()) {
-                layoutSwitcher.switchLayout(LayoutType.emptyFilter);
-            } else {
-                viewController.addToDisplay(LayoutType.filterDisplay, foundTasks);
-                layoutSwitcher.switchLayout(LayoutType.filterDisplay);
-            }
+//            ArrayList<Task> foundTasks = inputInteractor.searchTag();
+//            if (foundTasks.isEmpty()) {
+//                layoutSwitcher.switchLayout(LayoutType.emptyFilter);
+//            } else {
+//                viewController.addToDisplay(LayoutType.filterDisplay, foundTasks);
+//                layoutSwitcher.switchLayout(LayoutType.filterDisplay);
+//            }
         });
     }
 
     private void wireCompleteButton(ButtonBase button, Task task) {
         button.setOnAction(event -> {
             task.changeCompleted(!task.getCompletion());
+            ResultInfo result = taskService.changeCompletion(task);
             if (task.getCompletion()) {
                 button.setText("Mark incomplete");
                 viewController.addToDisplay(LayoutType.complete, task);
                 viewController.removeFromDisplay(LayoutType.todo, task);
-                viewController.displayToast("Task marked completed!");
             } else {
                 button.setText("Mark complete");
                 viewController.addToDisplay(LayoutType.todo, task);
                 viewController.removeFromDisplay(LayoutType.complete, task);
-                viewController.displayToast("Task marked incomplete!");
             }
+            viewController.displayToast(result.message());
         });
     }
 
@@ -105,11 +118,18 @@ public class MethodService {
 
     private void wireEditButton(ButtonBase button, Task task) {
         button.setOnAction(event -> {
-            ResultInfo resultInfo = inputInteractor.editTask(task);
-            viewController.removeFromDisplay(task);
-            viewController.addToDisplay(LayoutType.todo, resultInfo.task());
-            layoutSwitcher.switchLayout(LayoutType.todo);
-            viewController.displayToast(resultInfo.message());
+//            ResultInfo resultInfo = inputInteractor.editTask(task);
+//            viewController.removeFromDisplay(task);
+//            viewController.addToDisplay(LayoutType.todo, resultInfo.task());
+//            layoutSwitcher.switchLayout(LayoutType.todo);
+//            viewController.displayToast(resultInfo.message());
         });
+    }
+
+    private void matchButtonToWiring(TypeOfButton type, ButtonBase button, Task task) {
+        switch (type) {
+            case complete -> wireCompleteButton(button, task);
+            case editMenu -> wireEditMenuButton(button, task);
+        }
     }
 }
