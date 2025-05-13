@@ -2,8 +2,6 @@ package javadov2.controllers;
 
 import javadov2.enums.InputStringType;
 import javadov2.interfaces.Interactor;
-import javadov2.objects.ResultInfo;
-import javadov2.objects.Task;
 import javadov2.objects.TaskInfo;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

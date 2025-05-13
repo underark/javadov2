@@ -2,6 +2,7 @@ package javadov2.fileio;
 
 import javadov2.objects.ResultInfo;
 import javadov2.objects.Task;
+import javadov2.objects.TaskInfo;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -64,22 +65,24 @@ public class DBController {
         return new ResultInfo("Task completion could not be changed", null);
     }
 
-    public void editTask(Task task) {
-        String sql = "UPDATE tasks SET title = ?, date = ?, description = ?, tag = ?, completion = ? WHERE id = ?";
+    public ResultInfo editTask(Task task, TaskInfo taskInfo) {
+        String sql = "UPDATE tasks SET title = ?, date = ?, description = ?, tag = ?, completion = 0 WHERE id = ?";
         try (
             Connection connection = DriverManager.getConnection(url);
             PreparedStatement statement = connection.prepareStatement(sql)
         ) {
-            statement.setString(1, task.getTitle());
-            statement.setString(2, task.getDueDate());
-            statement.setString(3, task.getDescription());
-            statement.setString(4, task.getTag());
-            statement.setBoolean(5, task.getCompletion());
-            statement.setInt(6, task.getId());
+            statement.setString(1, taskInfo.title());
+            statement.setString(2, taskInfo.dueDate());
+            statement.setString(3, taskInfo.description());
+            statement.setString(4, taskInfo.tag());
+            statement.setInt(5, task.getId());
             statement.executeUpdate();
+            Task newTask = new Task(task.getId(), taskInfo.title(), taskInfo.dueDate(), taskInfo.description(), taskInfo.tag());
+            return new ResultInfo("Task information edited", newTask);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        return new ResultInfo("Unable to update task", null);
     }
 
     public List<Task> getIncompleteTasks() {
@@ -105,6 +108,32 @@ public class DBController {
             System.out.println(e.getMessage());
         }
         return tasks;
+    }
+
+    public List<Task> getCompleteTasks() {
+        String sql = "SELECT * FROM tasks WHERE completion = 1";
+        ArrayList<Task> tasks = new ArrayList<>();
+        try (
+                Connection connection = DriverManager.getConnection(url);
+                PreparedStatement statement = connection.prepareStatement(sql);
+                ResultSet resultSet = statement.executeQuery()
+        ) {
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String title = resultSet.getString("title");
+                String dueDate = resultSet.getString("date");
+                Optional<String> description = Optional.ofNullable(resultSet.getString("description"));
+                Optional<String> tag = Optional.ofNullable(resultSet.getString("tag"));
+                boolean completion = (resultSet.getInt("completion") == 0) ? false : true;
+                Task task = new Task(id, title, dueDate, description.orElse(""), tag.orElse(""), completion);
+                System.out.println(task.getCompletion());
+                tasks.add(task);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return tasks;
+
     }
 
     public int getNextTaskNumber() {

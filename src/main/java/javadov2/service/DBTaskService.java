@@ -30,6 +30,10 @@ public class DBTaskService implements ObjectService {
             return new ResultInfo("Due date cannot be empty", null);
         }
 
+        if (taskInfo.tag().contains(" ")) {
+            return new ResultInfo("Tag cannot contain spaces", null);
+        }
+
         if (result.equalsIgnoreCase("Task added to list")) {
             return dbController.addEntry(new Task(getNextTaskNumber(), taskInfo.title(), taskInfo.dueDate(), taskInfo.description(), taskInfo.tag()));
         }
@@ -40,10 +44,23 @@ public class DBTaskService implements ObjectService {
         return dbController.changeCompletion(task);
     }
 
-    //TODO
     public ResultInfo editTask(Task task, TaskInfo taskInfo) {
-        return null;
+        if (taskInfo.title() == null) {
+            return new ResultInfo("Title cannot be empty", null);
+        }
+
+        if (taskInfo.dueDate() == null) {
+            return new ResultInfo("Due date cannot be empty", null);
+        }
+
+        String result = localDateUtility.checkDateInput(taskInfo);
+        if (result.equalsIgnoreCase("Task added to list")) {
+            return dbController.addEntry(new Task(getNextTaskNumber(), taskInfo.title(), taskInfo.dueDate(), taskInfo.description(), taskInfo.tag()));
+        }
+
+        return dbController.editTask(task, taskInfo);
     }
+
     //TODO
     public ArrayList<Task> searchTags(String tag) {
         return null;
@@ -51,6 +68,10 @@ public class DBTaskService implements ObjectService {
 
     public List<Task> getIncompleteTasks() {
         return dbController.getIncompleteTasks();
+    }
+
+    public List<Task> getCompleteTasks() {
+        return dbController.getCompleteTasks();
     }
 
     public int getNextTaskNumber() {

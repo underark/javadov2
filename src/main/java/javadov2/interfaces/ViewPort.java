@@ -9,7 +9,7 @@ import java.util.Map;
 
 
 public interface ViewPort {
-    void addToDisplay(LayoutType type, Task task);
+    TaskNode addToDisplay(LayoutType type, Task task);
     void addToDisplay(LayoutType type, List<Task> tasks);
     void removeFromDisplay(LayoutType type, Task task);
     void removeFromDisplay(Task task);

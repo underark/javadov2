@@ -13,7 +13,6 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.*;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class MethodService {
@@ -118,11 +117,17 @@ public class MethodService {
 
     private void wireEditButton(ButtonBase button, Task task) {
         button.setOnAction(event -> {
-//            ResultInfo resultInfo = inputInteractor.editTask(task);
-//            viewController.removeFromDisplay(task);
-//            viewController.addToDisplay(LayoutType.todo, resultInfo.task());
-//            layoutSwitcher.switchLayout(LayoutType.todo);
-//            viewController.displayToast(resultInfo.message());
+            ResultInfo resultInfo = taskService.editTask(task, inputInteractor.getUserInput());
+            if (resultInfo.task() != null) {
+                viewController.removeFromDisplay(task);
+                TaskNode node = viewController.addToDisplay(LayoutType.todo, resultInfo.task());
+                wireCompleteButton(node.getButton(TypeOfButton.complete), node.getTask());
+                wireEditMenuButton(node.getButton(TypeOfButton.editMenu), node.getTask());
+                layoutSwitcher.switchLayout(LayoutType.todo);
+                viewController.displayToast(resultInfo.message());
+            } else {
+                viewController.displayToast(resultInfo.message());
+            }
         });
     }
 

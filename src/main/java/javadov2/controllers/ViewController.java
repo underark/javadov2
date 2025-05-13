@@ -32,12 +32,13 @@ public class ViewController implements ViewPort {
             shownTasks.put(type, new HashMap<>());
         }
         addToDisplay(LayoutType.todo, dbTaskService.getIncompleteTasks());
+        addToDisplay(LayoutType.complete, dbTaskService.getCompleteTasks());
     }
 
-    public void addToDisplay(LayoutType type, Task task) {
+    public TaskNode addToDisplay(LayoutType type, Task task) {
+        TaskNode taskNode;
         if (displays.containsKey(type)) {
             GridPane display = displays.get(type);
-            TaskNode taskNode;
             if (Objects.isNull(getShownTask(task))) {
                 taskNode = new TaskNode(task);
                 shownTasks.get(type).put(task, taskNode);
@@ -47,7 +48,9 @@ public class ViewController implements ViewPort {
             }
             int insertRow = display.getRowCount() + 1;
             display.addRow(insertRow, taskNode.getNode());
+            return taskNode;
         }
+        return null;
     }
 
     public void removeFromDisplay(LayoutType type, Task task) {
