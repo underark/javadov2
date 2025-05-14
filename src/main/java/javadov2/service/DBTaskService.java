@@ -7,8 +7,8 @@ import javadov2.objects.Task;
 import javadov2.objects.TaskInfo;
 import javadov2.utilities.LocalDateUtility;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DBTaskService implements ObjectService {
     private DBController dbController;
@@ -20,8 +20,6 @@ public class DBTaskService implements ObjectService {
     }
 
     public ResultInfo saveTask(TaskInfo taskInfo) {
-        String result = localDateUtility.checkDateInput(taskInfo);
-
         if (taskInfo.title() == null) {
             return new ResultInfo("Title cannot be empty", null);
         }
@@ -30,14 +28,15 @@ public class DBTaskService implements ObjectService {
             return new ResultInfo("Due date cannot be empty", null);
         }
 
-        if (taskInfo.tag().contains(" ")) {
+        if (taskInfo.tag() != null && taskInfo.tag().contains(" ")) {
             return new ResultInfo("Tag cannot contain spaces", null);
         }
 
-        if (result.equalsIgnoreCase("Task added to list")) {
-            return dbController.addEntry(new Task(getNextTaskNumber(), taskInfo.title(), taskInfo.dueDate(), taskInfo.description(), taskInfo.tag()));
+        if (!localDateUtility.checkDateInput(taskInfo)) {
+            return new ResultInfo("Ensure date is formatted YYYY-MM-DD and is in the future", null);
         }
-        return new ResultInfo(result, null);
+
+        return dbController.addEntry(new Task(getNextTaskNumber(), taskInfo.title(), taskInfo.dueDate(), taskInfo.description(), taskInfo.tag()));
     }
 
     public ResultInfo changeCompletion(Task task) {
@@ -53,20 +52,34 @@ public class DBTaskService implements ObjectService {
             return new ResultInfo("Due date cannot be empty", null);
         }
 
-        String result = localDateUtility.checkDateInput(taskInfo);
-        if (result.equalsIgnoreCase("Task added to list")) {
-            return dbController.addEntry(new Task(getNextTaskNumber(), taskInfo.title(), taskInfo.dueDate(), taskInfo.description(), taskInfo.tag()));
+        if (!localDateUtility.checkDateInput(taskInfo)) {
+            return new ResultInfo("Ensure date is formatted YYYY-MM-DD and is in the future", null);
         }
 
         return dbController.editTask(task, taskInfo);
     }
 
-    public List<Task> searchTags(String tag) {
-        return dbController.getSearchTags(tag);
+    public List<Task> searchTag(String term) {
+        return dbController.searchTag(term);
+    }
+
+    public List<Task> searchTitle(String term) {
+        return dbController.searchTitle(term);
+    }
+
+    public List<Task> searchDate(String term) {
+        return dbController.searchDate(term);
     }
 
     public List<Task> getIncompleteTasks() {
         return dbController.getIncompleteTasks();
+    }
+
+    public List<Task> getOverdueTasks() {
+        List<Task> tasks = dbController.getIncompleteTasks();
+        return tasks.stream().
+                filter(task -> localDateUtility.isOverdue(task))
+                .collect(Collectors.toList());
     }
 
     public List<Task> getCompleteTasks() {

@@ -1,5 +1,6 @@
 package javadov2.controllers;
 
+import javadov2.enums.ComboBoxType;
 import javadov2.enums.InputFieldType;
 import javadov2.enums.LayoutType;
 import javadov2.enums.TypeOfButton;
@@ -7,6 +8,7 @@ import javadov2.interfaces.Builder;
 import javadov2.interfaces.Manager;
 import javadov2.objects.LayoutBundle;
 import javafx.scene.control.ButtonBase;
+import javafx.scene.control.ComboBoxBase;
 import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -54,5 +56,11 @@ public class LayoutManager implements Manager {
         Map<LayoutType, Map<InputFieldType, TextInputControl>> inputs = new EnumMap<>(LayoutType.class);
         layouts.forEach((layout, bundle) -> inputs.put(layout, bundle.getInputs()));
         return inputs;
+    }
+
+    public Map<LayoutType, Map<ComboBoxType, ComboBoxBase>> giveComboBoxes() {
+        Map<LayoutType, Map<ComboBoxType, ComboBoxBase>> boxes = new EnumMap<>(LayoutType.class);
+        layouts.forEach((layout, bundle) -> boxes.put(layout, bundle.getComboBoxes()));
+        return boxes;
     }
 }

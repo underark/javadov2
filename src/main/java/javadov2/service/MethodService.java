@@ -13,6 +13,7 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -78,12 +79,28 @@ public class MethodService {
 
     private void wireSearchTag(ButtonBase button) {
         button.setOnAction(event -> {
-            List<Task> foundTasks = taskService.searchTags(inputInteractor.getStringValue(InputStringType.tagSearch));
-            if (foundTasks.isEmpty()) {
-                layoutSwitcher.switchLayout(LayoutType.emptyFilter);
+            List<Task> foundTasks = new ArrayList<>();
+            String term = inputInteractor.getStringValue(InputStringType.tagSearch);
+            Object type = inputInteractor.getComboBoxValue(LayoutType.filter, ComboBoxType.filter);
+            if (term == null || type == null) {
+                viewController.displayToast("Search term and type must not be empty");
             } else {
-                viewController.addToDisplay(LayoutType.filterDisplay, foundTasks);
-                layoutSwitcher.switchLayout(LayoutType.filterDisplay);
+                if (type.toString().compareTo("title") == 0) {
+                    foundTasks = taskService.searchTitle(term);
+                }
+                if (type.toString().compareTo("date") == 0) {
+                    foundTasks = taskService.searchDate(term);
+                }
+                if (type.toString().compareTo("tag") == 0) {
+                    foundTasks = taskService.searchTag(term);
+                }
+
+                if (foundTasks.isEmpty()) {
+                    layoutSwitcher.switchLayout(LayoutType.emptyFilter);
+                } else {
+                    viewController.addToDisplay(LayoutType.filterDisplay, foundTasks);
+                    layoutSwitcher.switchLayout(LayoutType.filterDisplay);
+                }
             }
         });
     }

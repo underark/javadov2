@@ -110,13 +110,63 @@ public class DBController {
         return tasks;
     }
 
-    public List<Task> getSearchTags(String term) {
+    public List<Task> searchTag(String term) {
         String sql = "SELECT * FROM tasks WHERE tag = ?";
         ArrayList<Task> foundTasks = new ArrayList<>();
         try (
                 Connection connection = DriverManager.getConnection(url);
                 PreparedStatement statement = connection.prepareStatement(sql);
+        ) {
+            statement.setString(1, term);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String title = resultSet.getString("title");
+                String dueDate = resultSet.getString("date");
+                Optional<String> description = Optional.ofNullable(resultSet.getString("description"));
+                Optional<String> tag = Optional.ofNullable(resultSet.getString("tag"));
+                boolean completion = (resultSet.getInt("completion") == 0) ? false : true;
+                Task task = new Task(id, title, dueDate, description.orElse(""), tag.orElse(""), completion);
+                foundTasks.add(task);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return foundTasks;
+    }
 
+    public List<Task> searchTitle(String term) {
+        String sql = "SELECT * FROM tasks WHERE title LIKE ?";
+        String newTerm = "%" + term + "%";
+        ArrayList<Task> foundTasks = new ArrayList<>();
+        try (
+                Connection connection = DriverManager.getConnection(url);
+                PreparedStatement statement = connection.prepareStatement(sql);
+        ) {
+            statement.setString(1, newTerm);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String title = resultSet.getString("title");
+                String dueDate = resultSet.getString("date");
+                Optional<String> description = Optional.ofNullable(resultSet.getString("description"));
+                Optional<String> tag = Optional.ofNullable(resultSet.getString("tag"));
+                boolean completion = (resultSet.getInt("completion") == 0) ? false : true;
+                Task task = new Task(id, title, dueDate, description.orElse(""), tag.orElse(""), completion);
+                foundTasks.add(task);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return foundTasks;
+    }
+
+    public List<Task> searchDate(String term) {
+        String sql = "SELECT * FROM tasks WHERE date = ?";
+        ArrayList<Task> foundTasks = new ArrayList<>();
+        try (
+                Connection connection = DriverManager.getConnection(url);
+                PreparedStatement statement = connection.prepareStatement(sql);
         ) {
             statement.setString(1, term);
             ResultSet resultSet = statement.executeQuery();

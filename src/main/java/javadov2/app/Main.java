@@ -26,7 +26,7 @@ public class Main extends Application {
         LayoutSwitcher layoutSwitcher = new LayoutSwitcher(layoutManager.giveRoot(), layoutManager.giveToastContainer(), layoutManager.giveLayouts());
         DBController dbController = new DBController("jdbc:sqlite:/home/alex/projects/java/JavaDoV2/sql/my.db");
         DBTaskService dbTaskService = new DBTaskService(dbController);
-        Interactor inputInteractor = new InputInteractor();
+        Interactor inputInteractor = new InputInteractor(layoutManager.giveComboBoxes());
         ViewPort viewController = new ViewController(dbTaskService, layoutManager.giveDisplays(), layoutManager.giveToastContainer());
         MethodService methodService = new MethodService(layoutManager.giveButtons(), layoutManager.giveInputs(), layoutSwitcher, viewController, inputInteractor, dbTaskService);
         methodService.wireStaticButtonsAndInput();

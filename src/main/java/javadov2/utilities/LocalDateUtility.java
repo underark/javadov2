@@ -8,13 +8,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LocalDateUtility {
-    public String checkDateInput(TaskInfo taskInfo) {
+    public boolean checkDateInput(TaskInfo taskInfo) {
         if (!checkValidDateFormat(taskInfo.dueDate())) {
-            return "Format error. Use YYY--MM--DD";
+            return false;
         } else if (!checkValidDate(taskInfo.dueDate())) {
-            return "Cannot make task with past date";
+            return false;
         }
-        return "Task added to list";
+        return true;
     }
 
     public boolean isOverdue(Task task) {

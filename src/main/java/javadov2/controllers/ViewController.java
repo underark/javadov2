@@ -33,6 +33,7 @@ public class ViewController implements ViewPort {
         }
         addToDisplay(LayoutType.todo, dbTaskService.getIncompleteTasks());
         addToDisplay(LayoutType.complete, dbTaskService.getCompleteTasks());
+        addToDisplay(LayoutType.overdue, dbTaskService.getOverdueTasks());
     }
 
     public TaskNode addToDisplay(LayoutType type, Task task) {

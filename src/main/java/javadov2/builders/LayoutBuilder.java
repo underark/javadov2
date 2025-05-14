@@ -1,5 +1,6 @@
 package javadov2.builders;
 
+import javadov2.enums.ComboBoxType;
 import javadov2.enums.InputFieldType;
 import javadov2.enums.LayoutType;
 import javadov2.enums.TypeOfButton;
@@ -8,9 +9,9 @@ import javadov2.objects.ButtonBundle;
 import javadov2.objects.InputBundle;
 import javadov2.objects.LayoutBundle;
 import javadov2.utilities.BuilderUtility;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
@@ -57,7 +58,7 @@ import java.util.Map;
         ButtonBundle buttonBundle = leftMenuPanel();
         borderPane.setLeft(buttonBundle.getContainer());
         borderPane.setCenter(gridPane);
-        return new LayoutBundle(borderPane, buttonBundle.getButtons(), Map.of(), gridPane);
+        return new LayoutBundle(borderPane, buttonBundle.getButtons(), Map.of(), gridPane, Map.of());
     }
 
     private LayoutBundle input() {
@@ -77,7 +78,7 @@ import java.util.Map;
         borderPane.setLeft(buttonBundle.getContainer());
         borderPane.setCenter(inputContainer);
         borderPane.setBottom(bottom);
-        return new LayoutBundle(borderPane, buttonBundle.getButtons(), inputBundle.getInputs(), inputContainer);
+        return new LayoutBundle(borderPane, buttonBundle.getButtons(), inputBundle.getInputs(), inputContainer, Map.of());
     }
 
     private LayoutBundle edit() {
@@ -97,7 +98,7 @@ import java.util.Map;
         borderPane.setLeft(buttonBundle.getContainer());
         borderPane.setCenter(inputContainer);
         borderPane.setBottom(bottom);
-        return new LayoutBundle(borderPane, buttonBundle.getButtons(), inputBundle.getInputs(), inputContainer);
+        return new LayoutBundle(borderPane, buttonBundle.getButtons(), inputBundle.getInputs(), inputContainer, Map.of());
     }
 
     private LayoutBundle filter() {
@@ -106,11 +107,12 @@ import java.util.Map;
         Button searchButton = builderUtility.makeStylizedButton("search", "form-btn", "search");
         buttonBundle.addButton(TypeOfButton.search, searchButton);
         InputBundle inputBundle = new InputBundle(Map.of(InputFieldType.tagSearch, builderUtility.makeShortInput("tagSearch")), new HBox());
-        HBox center = new HBox(inputBundle.findInputByType(InputFieldType.tagSearch), searchButton);
+        ComboBox selector = new ComboBox(FXCollections.observableArrayList("title", "date", "tag"));
+        HBox center = new HBox(inputBundle.findInputByType(InputFieldType.tagSearch), searchButton, selector);
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(buttonBundle.getContainer());
         borderPane.setCenter(center);
-        return new LayoutBundle(borderPane, buttonBundle.getButtons(), inputBundle.getInputs(), container);
+        return new LayoutBundle(borderPane, buttonBundle.getButtons(), inputBundle.getInputs(), container, Map.of(ComboBoxType.filter, selector));
     }
 
     private LayoutBundle filterDisplay() {
@@ -119,7 +121,7 @@ import java.util.Map;
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(buttonBundle.getContainer());
         borderPane.setCenter(container);
-        return new LayoutBundle(borderPane, buttonBundle.getButtons(), Map.of(), container);
+        return new LayoutBundle(borderPane, buttonBundle.getButtons(), Map.of(), container, Map.of());
     }
 
     private LayoutBundle emptyFilterDisplay() {
@@ -128,7 +130,7 @@ import java.util.Map;
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(menu.getContainer());
         borderPane.setCenter(center);
-        return new LayoutBundle(borderPane, menu.getButtons(), Map.of(), new GridPane());
+        return new LayoutBundle(borderPane, menu.getButtons(), Map.of(), new GridPane(), Map.of());
     }
 
     private LayoutBundle overdue() {
@@ -137,7 +139,7 @@ import java.util.Map;
         ButtonBundle bundle = leftMenuPanel();
         borderPane.setLeft(bundle.getContainer());
         borderPane.setCenter(gridPane);
-        return new LayoutBundle(borderPane, bundle.getButtons(), Map.of(), gridPane);
+        return new LayoutBundle(borderPane, bundle.getButtons(), Map.of(), gridPane, Map.of());
     }
 
     private LayoutBundle complete() {
@@ -146,7 +148,7 @@ import java.util.Map;
         ButtonBundle menuButtons = leftMenuPanel();
         borderPane.setLeft(menuButtons.getContainer());
         borderPane.setCenter(gridPane);
-        return new LayoutBundle(borderPane, menuButtons.getButtons(), Map.of(), gridPane);
+        return new LayoutBundle(borderPane, menuButtons.getButtons(), Map.of(), gridPane, Map.of());
     }
 
     private ButtonBundle leftMenuPanel() {
