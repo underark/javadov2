@@ -61,9 +61,8 @@ public class DBTaskService implements ObjectService {
         return dbController.editTask(task, taskInfo);
     }
 
-    //TODO
-    public ArrayList<Task> searchTags(String tag) {
-        return null;
+    public List<Task> searchTags(String tag) {
+        return dbController.getSearchTags(tag);
     }
 
     public List<Task> getIncompleteTasks() {

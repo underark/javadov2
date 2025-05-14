@@ -10,4 +10,5 @@ import javafx.beans.property.StringProperty;
 public interface Interactor {
     TaskInfo getUserInput();
     StringProperty getProperty(InputStringType type);
+    String getStringValue(InputStringType string);
 }

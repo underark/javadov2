@@ -13,6 +13,7 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.control.ButtonBase;
 import javafx.scene.control.*;
 
+import java.util.List;
 import java.util.Map;
 
 public class MethodService {
@@ -77,13 +78,13 @@ public class MethodService {
 
     private void wireSearchTag(ButtonBase button) {
         button.setOnAction(event -> {
-//            ArrayList<Task> foundTasks = inputInteractor.searchTag();
-//            if (foundTasks.isEmpty()) {
-//                layoutSwitcher.switchLayout(LayoutType.emptyFilter);
-//            } else {
-//                viewController.addToDisplay(LayoutType.filterDisplay, foundTasks);
-//                layoutSwitcher.switchLayout(LayoutType.filterDisplay);
-//            }
+            List<Task> foundTasks = taskService.searchTags(inputInteractor.getStringValue(InputStringType.tagSearch));
+            if (foundTasks.isEmpty()) {
+                layoutSwitcher.switchLayout(LayoutType.emptyFilter);
+            } else {
+                viewController.addToDisplay(LayoutType.filterDisplay, foundTasks);
+                layoutSwitcher.switchLayout(LayoutType.filterDisplay);
+            }
         });
     }
 

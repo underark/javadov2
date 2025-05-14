@@ -11,7 +11,7 @@ public interface ObjectService {
     ResultInfo saveTask(TaskInfo taskInfo);
     ResultInfo editTask(Task task, TaskInfo taskInfo);
     ResultInfo changeCompletion(Task task);
-    ArrayList<Task> searchTags(String tag);
+    List<Task> searchTags(String tag);
     List<Task> getIncompleteTasks();
     int getNextTaskNumber();
 }

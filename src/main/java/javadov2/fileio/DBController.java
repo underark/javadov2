@@ -110,6 +110,32 @@ public class DBController {
         return tasks;
     }
 
+    public List<Task> getSearchTags(String term) {
+        String sql = "SELECT * FROM tasks WHERE tag = ?";
+        ArrayList<Task> foundTasks = new ArrayList<>();
+        try (
+                Connection connection = DriverManager.getConnection(url);
+                PreparedStatement statement = connection.prepareStatement(sql);
+
+        ) {
+            statement.setString(1, term);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String title = resultSet.getString("title");
+                String dueDate = resultSet.getString("date");
+                Optional<String> description = Optional.ofNullable(resultSet.getString("description"));
+                Optional<String> tag = Optional.ofNullable(resultSet.getString("tag"));
+                boolean completion = (resultSet.getInt("completion") == 0) ? false : true;
+                Task task = new Task(id, title, dueDate, description.orElse(""), tag.orElse(""), completion);
+                foundTasks.add(task);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return foundTasks;
+    }
+
     public List<Task> getCompleteTasks() {
         String sql = "SELECT * FROM tasks WHERE completion = 1";
         ArrayList<Task> tasks = new ArrayList<>();
@@ -126,14 +152,12 @@ public class DBController {
                 Optional<String> tag = Optional.ofNullable(resultSet.getString("tag"));
                 boolean completion = (resultSet.getInt("completion") == 0) ? false : true;
                 Task task = new Task(id, title, dueDate, description.orElse(""), tag.orElse(""), completion);
-                System.out.println(task.getCompletion());
                 tasks.add(task);
             }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return tasks;
-
     }
 
     public int getNextTaskNumber() {

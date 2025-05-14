@@ -29,7 +29,7 @@ public class InputInteractor implements Interactor {
         return new TaskInfo(title, date, description, tag);
     }
 
-    private String getStringValue(InputStringType type) {
+    public String getStringValue(InputStringType type) {
         switch (type) {
             case title -> {
                 return titleProperty.getValue();
