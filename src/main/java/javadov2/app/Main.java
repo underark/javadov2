@@ -32,6 +32,7 @@ public class Main extends Application {
         methodService.wireStaticButtonsAndInput();
         methodService.wireExistingTaskButtons(viewController.getExistingTasks());
         stage.setScene(new Scene(layoutManager.giveRoot(), 800, 800));
+        stage.getScene().getStylesheets().add(getClass().getResource("/javadov2/style.css").toExternalForm());
         stage.show();
     }
 }

@@ -13,7 +13,11 @@ public class ButtonBundle {
 
     public ButtonBundle(Map<TypeOfButton, ButtonBase> map, Pane container) {
         buttons = map;
-        buttons.forEach((type, button) -> container.getChildren().add(button));
+        container.getChildren().add(buttons.get(TypeOfButton.homeMenu));
+        container.getChildren().add(buttons.get(TypeOfButton.inputMenu));
+        container.getChildren().add(buttons.get(TypeOfButton.complete));
+        container.getChildren().add(buttons.get(TypeOfButton.overdue));
+        container.getChildren().add(buttons.get(TypeOfButton.filter));
         this.container = container;
     }
 

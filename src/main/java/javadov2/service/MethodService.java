@@ -85,13 +85,13 @@ public class MethodService {
             if (term == null || type == null) {
                 viewController.displayToast("Search term and type must not be empty");
             } else {
-                if (type.toString().compareTo("title") == 0) {
+                if (type.toString().equals("title")) {
                     foundTasks = taskService.searchTitle(term);
                 }
-                if (type.toString().compareTo("date") == 0) {
+                if (type.toString().equals("date")) {
                     foundTasks = taskService.searchDate(term);
                 }
-                if (type.toString().compareTo("tag") == 0) {
+                if (type.toString().equals("tag")) {
                     foundTasks = taskService.searchTag(term);
                 }
 

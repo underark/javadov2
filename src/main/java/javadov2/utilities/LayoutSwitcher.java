@@ -3,6 +3,7 @@ package javadov2.utilities;
 import javadov2.enums.LayoutType;
 import javadov2.enums.TypeOfButton;
 import javadov2.objects.LayoutBundle;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 
 import javafx.scene.control.ButtonBase;
@@ -26,6 +27,7 @@ public class LayoutSwitcher {
     public void switchLayout(LayoutType type) {
         Node layout = layouts.get(type).getPanel();
         root.getChildren().setAll(layout, toastContainer);
+        root.setAlignment(toastContainer, Pos.BOTTOM_RIGHT);
     }
 
     private void initialize() {

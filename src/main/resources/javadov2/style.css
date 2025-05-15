@@ -1,0 +1,14 @@
+.toast-container {
+}
+
+.menu-btn {
+    -fx-background-color: lavender;
+    -fx-pref-height: 130;
+    -fx-pref-height: 130;
+}
+
+.menu-btn:hover {
+    -fx-background-color: lightblue;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}

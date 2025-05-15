@@ -53,7 +53,7 @@ import java.util.Map;
     }
 
     private LayoutBundle toDo() {
-        GridPane gridPane = new GridPane();
+        GridPane gridPane = builderUtility.makeGridPane();
         BorderPane borderPane = new BorderPane();
         ButtonBundle buttonBundle = leftMenuPanel();
         borderPane.setLeft(buttonBundle.getContainer());
@@ -62,7 +62,7 @@ import java.util.Map;
     }
 
     private LayoutBundle input() {
-        GridPane inputContainer = new GridPane();
+        GridPane inputContainer = builderUtility.makeGridPane();
         InputBundle inputBundle = inputPanel();
         inputContainer.addRow(0, builderUtility.makeStylizedLabel("Title", "strong"), inputBundle.findInputByType(InputFieldType.title));
         inputContainer.addRow(1, builderUtility.makeStylizedLabel("Due date", "strong"), inputBundle.findInputByType(InputFieldType.dueDate));
@@ -82,7 +82,7 @@ import java.util.Map;
     }
 
     private LayoutBundle edit() {
-        GridPane inputContainer = new GridPane();
+        GridPane inputContainer = builderUtility.makeGridPane();
         InputBundle inputBundle = inputPanel();
         inputContainer.addRow(0, builderUtility.makeStylizedLabel("Title", "strong"), inputBundle.findInputByType(InputFieldType.title));
         inputContainer.addRow(1, builderUtility.makeStylizedLabel("Due date", "strong"), inputBundle.findInputByType(InputFieldType.dueDate));
@@ -102,7 +102,7 @@ import java.util.Map;
     }
 
     private LayoutBundle filter() {
-        GridPane container = new GridPane();
+        GridPane container = builderUtility.makeGridPane();
         ButtonBundle buttonBundle = leftMenuPanel();
         Button searchButton = builderUtility.makeStylizedButton("search", "form-btn", "search");
         buttonBundle.addButton(TypeOfButton.search, searchButton);
@@ -116,7 +116,7 @@ import java.util.Map;
     }
 
     private LayoutBundle filterDisplay() {
-        GridPane container = new GridPane();
+        GridPane container = builderUtility.makeGridPane();
         ButtonBundle buttonBundle = leftMenuPanel();
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(buttonBundle.getContainer());
@@ -134,7 +134,7 @@ import java.util.Map;
     }
 
     private LayoutBundle overdue() {
-        GridPane gridPane = new GridPane();
+        GridPane gridPane = builderUtility.makeGridPane();
         BorderPane borderPane = new BorderPane();
         ButtonBundle bundle = leftMenuPanel();
         borderPane.setLeft(bundle.getContainer());
@@ -143,7 +143,7 @@ import java.util.Map;
     }
 
     private LayoutBundle complete() {
-        GridPane gridPane = new GridPane();
+        GridPane gridPane = builderUtility.makeGridPane();
         BorderPane borderPane = new BorderPane();
         ButtonBundle menuButtons = leftMenuPanel();
         borderPane.setLeft(menuButtons.getContainer());
@@ -154,10 +154,15 @@ import java.util.Map;
     private ButtonBundle leftMenuPanel() {
         Button homeButton = builderUtility.makeStylizedButton("Home", "menu-btn", "home");
         Button inputButton = builderUtility.makeStylizedButton("New task", "menu-btn", "input");
-        Button completeButton = builderUtility.makeStylizedButton("Show complete", "menu-btn", "complete");
-        Button filterButton = builderUtility.makeStylizedButton("Search tag", "menu-btn", "searchTag");
-        Button overdueButton = builderUtility.makeStylizedButton("Show overdue", "menu-btn", "overdue");
+        Button completeButton = builderUtility.makeStylizedButton("Completed", "menu-btn", "complete");
+        Button filterButton = builderUtility.makeStylizedButton("Search", "menu-btn", "searchTag");
+        Button overdueButton = builderUtility.makeStylizedButton("Overdue", "menu-btn", "overdue");
         VBox container = new VBox();
+        container.setSpacing(15);
+        container.setPadding(new Insets(5));
+        container.setFillWidth(true);
+        container.setPrefWidth(130);
+
         container.getStyleClass().add("menu-box");
         Map<TypeOfButton, ButtonBase> buttons = new HashMap<>(Map.of(
                 TypeOfButton.homeMenu, homeButton,
