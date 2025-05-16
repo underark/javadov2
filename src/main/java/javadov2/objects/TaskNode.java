@@ -1,6 +1,7 @@
 package javadov2.objects;
 
 import javadov2.enums.TypeOfButton;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBase;
@@ -15,7 +16,7 @@ public class TaskNode {
     Node dueDate;
     Node description;
     Node tag;
-    Node node;
+    HBox node;
     Map<TypeOfButton, ButtonBase> buttons;
 
     public TaskNode(Task task) {
@@ -30,6 +31,10 @@ public class TaskNode {
         );
         buttons.forEach(((typeOfButton, button) -> {button.setVisible(false);}));
         node = new HBox(title, dueDate, description, tag, getButton(TypeOfButton.complete), getButton(TypeOfButton.editMenu));
+        node.setMaxWidth(Double.MAX_VALUE);
+        node.setAlignment(Pos.CENTER);
+        node.setSpacing(60);
+        node.getStyleClass().add("task-node");
         node.setOnMouseEntered(event -> {
             buttons.forEach((type, button) -> button.setVisible(true));
         });
@@ -70,6 +75,15 @@ public class TaskNode {
     }
 
     public Node getNode() {
+        return node;
+    }
+
+    public Node getNodeNoButtons() {
+        node = new HBox(title, dueDate, description, tag);
+        node.setMaxWidth(Double.MAX_VALUE);
+        node.setAlignment(Pos.CENTER);
+        node.setSpacing(60);
+        node.getStyleClass().add("task-node");
         return node;
     }
 

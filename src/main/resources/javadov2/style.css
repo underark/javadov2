@@ -12,3 +12,7 @@
     -fx-text-fill: white;
     -fx-cursor: hand;
 }
+
+.task-node:hover {
+    -fx-background-color: lightblue;
+}

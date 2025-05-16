@@ -53,21 +53,27 @@ import java.util.Map;
     }
 
     private LayoutBundle toDo() {
-        GridPane gridPane = builderUtility.makeGridPane();
+        VBox taskVBox = builderUtility.makeTaskVBox();
+        ScrollPane scrollPane = builderUtility.makeScrollPane(taskVBox);
         BorderPane borderPane = new BorderPane();
         ButtonBundle buttonBundle = leftMenuPanel();
         borderPane.setLeft(buttonBundle.getContainer());
-        borderPane.setCenter(gridPane);
-        return new LayoutBundle(borderPane, buttonBundle.getButtons(), Map.of(), gridPane, Map.of());
+        borderPane.setCenter(scrollPane);
+        return new LayoutBundle(borderPane, buttonBundle.getButtons(), Map.of(), taskVBox, Map.of());
     }
 
     private LayoutBundle input() {
-        GridPane inputContainer = builderUtility.makeGridPane();
+        VBox taskVBox = builderUtility.makeTaskVBox();
+        ScrollPane scrollPane = builderUtility.makeScrollPane(taskVBox);
         InputBundle inputBundle = inputPanel();
-        inputContainer.addRow(0, builderUtility.makeStylizedLabel("Title", "strong"), inputBundle.findInputByType(InputFieldType.title));
-        inputContainer.addRow(1, builderUtility.makeStylizedLabel("Due date", "strong"), inputBundle.findInputByType(InputFieldType.dueDate));
-        inputContainer.addRow(2, builderUtility.makeStylizedLabel("Description", "strong"), inputBundle.findInputByType(InputFieldType.description));
-        inputContainer.addRow(3, builderUtility.makeStylizedLabel("Tag", "strong"), inputBundle.findInputByType(InputFieldType.tagInput));
+        taskVBox.getChildren().add(builderUtility.makeStylizedLabel("Title", "strong"));
+        taskVBox.getChildren().add(inputBundle.findInputByType(InputFieldType.title));
+        taskVBox.getChildren().add(builderUtility.makeStylizedLabel("Due date", "strong"));
+        taskVBox.getChildren().add(inputBundle.findInputByType(InputFieldType.dueDate));
+        taskVBox.getChildren().add(builderUtility.makeStylizedLabel("Description", "strong"));
+        taskVBox.getChildren().add(inputBundle.findInputByType(InputFieldType.description));
+        taskVBox.getChildren().add(builderUtility.makeStylizedLabel("Tag", "strong"));
+        taskVBox.getChildren().add(inputBundle.findInputByType(InputFieldType.tagInput));
         Button saveButton = builderUtility.makeStylizedButton("Save", "form-btn", "save");
         HBox bottom = new HBox(saveButton);
 
@@ -76,18 +82,23 @@ import java.util.Map;
 
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(buttonBundle.getContainer());
-        borderPane.setCenter(inputContainer);
+        borderPane.setCenter(scrollPane);
         borderPane.setBottom(bottom);
-        return new LayoutBundle(borderPane, buttonBundle.getButtons(), inputBundle.getInputs(), inputContainer, Map.of());
+        return new LayoutBundle(borderPane, buttonBundle.getButtons(), inputBundle.getInputs(), taskVBox, Map.of());
     }
 
     private LayoutBundle edit() {
-        GridPane inputContainer = builderUtility.makeGridPane();
+        VBox taskVBox = builderUtility.makeTaskVBox();
+        ScrollPane scrollPane = builderUtility.makeScrollPane(taskVBox);
         InputBundle inputBundle = inputPanel();
-        inputContainer.addRow(0, builderUtility.makeStylizedLabel("Title", "strong"), inputBundle.findInputByType(InputFieldType.title));
-        inputContainer.addRow(1, builderUtility.makeStylizedLabel("Due date", "strong"), inputBundle.findInputByType(InputFieldType.dueDate));
-        inputContainer.addRow(2, builderUtility.makeStylizedLabel("Description", "strong"), inputBundle.findInputByType(InputFieldType.description));
-        inputContainer.addRow(3, builderUtility.makeStylizedLabel("Tag", "strong"), inputBundle.findInputByType(InputFieldType.tagInput));
+        taskVBox.getChildren().add(builderUtility.makeStylizedLabel("Title", "strong"));
+        taskVBox.getChildren().add(inputBundle.findInputByType(InputFieldType.title));
+        taskVBox.getChildren().add(builderUtility.makeStylizedLabel("Due date", "strong"));
+        taskVBox.getChildren().add(inputBundle.findInputByType(InputFieldType.dueDate));
+        taskVBox.getChildren().add(builderUtility.makeStylizedLabel("Description", "strong"));
+        taskVBox.getChildren().add(inputBundle.findInputByType(InputFieldType.description));
+        taskVBox.getChildren().add(builderUtility.makeStylizedLabel("Tag", "strong"));
+        taskVBox.getChildren().add(inputBundle.findInputByType(InputFieldType.tagInput));
         Button editButton = builderUtility.makeStylizedButton("Save", "form-btn", "save");
         HBox bottom = new HBox(editButton);
 
@@ -96,32 +107,34 @@ import java.util.Map;
 
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(buttonBundle.getContainer());
-        borderPane.setCenter(inputContainer);
+        borderPane.setCenter(taskVBox);
         borderPane.setBottom(bottom);
-        return new LayoutBundle(borderPane, buttonBundle.getButtons(), inputBundle.getInputs(), inputContainer, Map.of());
+        return new LayoutBundle(borderPane, buttonBundle.getButtons(), inputBundle.getInputs(), taskVBox, Map.of());
     }
 
     private LayoutBundle filter() {
-        GridPane container = builderUtility.makeGridPane();
+        VBox taskVBox = builderUtility.makeTaskVBox();
+        ScrollPane scrollPane = builderUtility.makeScrollPane(taskVBox);
         ButtonBundle buttonBundle = leftMenuPanel();
         Button searchButton = builderUtility.makeStylizedButton("search", "form-btn", "search");
         buttonBundle.addButton(TypeOfButton.search, searchButton);
         InputBundle inputBundle = new InputBundle(Map.of(InputFieldType.tagSearch, builderUtility.makeShortInput("tagSearch")), new HBox());
         ComboBox selector = new ComboBox(FXCollections.observableArrayList("title", "date", "tag"));
-        HBox center = new HBox(inputBundle.findInputByType(InputFieldType.tagSearch), searchButton, selector);
+        taskVBox.getChildren().addAll(inputBundle.findInputByType(InputFieldType.tagSearch), searchButton, selector);
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(buttonBundle.getContainer());
-        borderPane.setCenter(center);
-        return new LayoutBundle(borderPane, buttonBundle.getButtons(), inputBundle.getInputs(), container, Map.of(ComboBoxType.filter, selector));
+        borderPane.setCenter(scrollPane);
+        return new LayoutBundle(borderPane, buttonBundle.getButtons(), inputBundle.getInputs(), taskVBox, Map.of(ComboBoxType.filter, selector));
     }
 
     private LayoutBundle filterDisplay() {
-        GridPane container = builderUtility.makeGridPane();
+        VBox taskVBox = builderUtility.makeTaskVBox();
+        ScrollPane scrollPane = builderUtility.makeScrollPane(taskVBox);
         ButtonBundle buttonBundle = leftMenuPanel();
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(buttonBundle.getContainer());
-        borderPane.setCenter(container);
-        return new LayoutBundle(borderPane, buttonBundle.getButtons(), Map.of(), container, Map.of());
+        borderPane.setCenter(scrollPane);
+        return new LayoutBundle(borderPane, buttonBundle.getButtons(), Map.of(), taskVBox, Map.of());
     }
 
     private LayoutBundle emptyFilterDisplay() {
@@ -130,25 +143,27 @@ import java.util.Map;
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(menu.getContainer());
         borderPane.setCenter(center);
-        return new LayoutBundle(borderPane, menu.getButtons(), Map.of(), new GridPane(), Map.of());
+        return new LayoutBundle(borderPane, menu.getButtons(), Map.of(), new VBox(), Map.of());
     }
 
     private LayoutBundle overdue() {
-        GridPane gridPane = builderUtility.makeGridPane();
+        VBox taskVBox = builderUtility.makeTaskVBox();
+        ScrollPane scrollPane = builderUtility.makeScrollPane(taskVBox);
         BorderPane borderPane = new BorderPane();
         ButtonBundle bundle = leftMenuPanel();
         borderPane.setLeft(bundle.getContainer());
-        borderPane.setCenter(gridPane);
-        return new LayoutBundle(borderPane, bundle.getButtons(), Map.of(), gridPane, Map.of());
+        borderPane.setCenter(scrollPane);
+        return new LayoutBundle(borderPane, bundle.getButtons(), Map.of(), taskVBox, Map.of());
     }
 
     private LayoutBundle complete() {
-        GridPane gridPane = builderUtility.makeGridPane();
+        VBox taskVBox = builderUtility.makeTaskVBox();
+        ScrollPane scrollPane = builderUtility.makeScrollPane(taskVBox);
         BorderPane borderPane = new BorderPane();
         ButtonBundle menuButtons = leftMenuPanel();
         borderPane.setLeft(menuButtons.getContainer());
-        borderPane.setCenter(gridPane);
-        return new LayoutBundle(borderPane, menuButtons.getButtons(), Map.of(), gridPane, Map.of());
+        borderPane.setCenter(scrollPane);
+        return new LayoutBundle(borderPane, menuButtons.getButtons(), Map.of(), taskVBox, Map.of());
     }
 
     private ButtonBundle leftMenuPanel() {

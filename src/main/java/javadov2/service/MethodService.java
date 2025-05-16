@@ -98,7 +98,7 @@ public class MethodService {
                 if (foundTasks.isEmpty()) {
                     layoutSwitcher.switchLayout(LayoutType.emptyFilter);
                 } else {
-                    viewController.addToDisplay(LayoutType.filterDisplay, foundTasks);
+                    viewController.addToDisplayNoButtons(LayoutType.filterDisplay, foundTasks);
                     layoutSwitcher.switchLayout(LayoutType.filterDisplay);
                 }
             }

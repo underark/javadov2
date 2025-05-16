@@ -40,8 +40,8 @@ public class LayoutManager implements Manager {
         return layouts;
     }
 
-    public Map<LayoutType, GridPane> giveDisplays() {
-        Map<LayoutType, GridPane> map = new EnumMap<>(LayoutType.class);
+    public Map<LayoutType, VBox> giveDisplays() {
+        Map<LayoutType, VBox> map = new EnumMap<>(LayoutType.class);
         layouts.forEach((type, layout) -> map.put(type, layout.getDisplay()));
         return map;
     }

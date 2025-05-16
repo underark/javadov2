@@ -2,13 +2,11 @@ package javadov2.utilities;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 
 public class BuilderUtility {
@@ -44,12 +42,17 @@ public class BuilderUtility {
         return input;
     }
 
-    public GridPane makeGridPane() {
-        GridPane pane = new GridPane();
-        ColumnConstraints cc = new ColumnConstraints();
-        cc.setHgrow(Priority.ALWAYS);
-        pane.getColumnConstraints().add(cc);
-        pane.setAlignment(Pos.TOP_CENTER);
-        return pane;
+    public VBox makeTaskVBox() {
+        VBox box = new VBox(10);
+        box.setAlignment(Pos.TOP_CENTER);
+        return box;
+    }
+
+    public ScrollPane makeScrollPane(VBox vBox) {
+        ScrollPane scrollPane = new ScrollPane(vBox);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        return scrollPane;
     }
 }

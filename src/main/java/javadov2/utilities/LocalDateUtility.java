@@ -11,7 +11,7 @@ public class LocalDateUtility {
     public boolean checkDateInput(TaskInfo taskInfo) {
         if (!checkValidDateFormat(taskInfo.dueDate())) {
             return false;
-        } else if (!checkValidDate(taskInfo.dueDate())) {
+        } else if (checkValidDate(taskInfo.dueDate())) {
             return false;
         }
         return true;

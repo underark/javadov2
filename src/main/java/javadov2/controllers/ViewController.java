@@ -2,7 +2,6 @@ package javadov2.controllers;
 
 
 import javadov2.enums.LayoutType;
-import javadov2.enums.TypeOfButton;
 import javadov2.interfaces.ViewPort;
 import javadov2.objects.Task;
 import javadov2.objects.TaskNode;
@@ -17,12 +16,12 @@ import java.util.*;
 
 public class ViewController implements ViewPort {
     private final VBox toastContainer;
-    private final Map<LayoutType, GridPane> displays;
+    private final Map<LayoutType, VBox> displays;
     private Map<LayoutType, Map<Task, TaskNode>> shownTasks;
     private TaskNodeFactory taskNodeFactory;
     private Toaster toaster;
 
-    public ViewController(DBTaskService dbTaskService, Map<LayoutType, GridPane> displays, VBox toastContainer) {
+    public ViewController(DBTaskService dbTaskService, Map<LayoutType, VBox> displays, VBox toastContainer) {
         this.displays = displays;
         this.toastContainer = toastContainer;
         taskNodeFactory = new TaskNodeFactory();
@@ -39,7 +38,7 @@ public class ViewController implements ViewPort {
     public TaskNode addToDisplay(LayoutType type, Task task) {
         TaskNode taskNode;
         if (displays.containsKey(type)) {
-            GridPane display = displays.get(type);
+            VBox display = displays.get(type);
             if (Objects.isNull(getShownTask(task))) {
                 taskNode = new TaskNode(task);
                 shownTasks.get(type).put(task, taskNode);
@@ -47,8 +46,7 @@ public class ViewController implements ViewPort {
                 taskNode = getShownTask(task);
                 shownTasks.get(type).put(task, taskNode);
             }
-            int insertRow = display.getRowCount() + 1;
-            display.addRow(insertRow, taskNode.getNode());
+            display.getChildren().add(taskNode.getNode());
             return taskNode;
         }
         return null;
@@ -56,7 +54,7 @@ public class ViewController implements ViewPort {
 
     public void removeFromDisplay(LayoutType type, Task task) {
         if (displays.containsKey(type)) {
-            GridPane display = displays.get(type);
+            VBox display = displays.get(type);
             TaskNode node = shownTasks.get(type).get(task);
             display.getChildren().remove(node.getNode());
             shownTasks.get(type).remove(task);
@@ -64,8 +62,8 @@ public class ViewController implements ViewPort {
     }
 
     public void removeFromDisplay(Task task) {
-        displays.forEach((type, gridPane) -> {
-            gridPane.getChildren().remove(getShownTask(task).getNode());
+        displays.forEach((type, VBox) -> {
+            VBox.getChildren().remove(getShownTask(task).getNode());
         });
     }
 
@@ -73,18 +71,33 @@ public class ViewController implements ViewPort {
         Map<Task, TaskNode> nodeMap = new HashMap<>();
         displays.get(type).getChildren().clear();
         if (displays.containsKey(type)) {
-            GridPane display = displays.get(type);
+            VBox display = displays.get(type);
             List<TaskNode> taskNodes = tasks.stream()
                     .map(task -> taskNodeFactory.makeTaskNode(task))
                     .toList();
             taskNodes.forEach(node -> {
-                display.addRow(display.getRowCount() + 1, node.getNode());
+                display.getChildren().add(node.getNode());
                 nodeMap.put(node.getTask(), node);
             });
             shownTasks.put(type, nodeMap);
         }
     }
 
+    public void addToDisplayNoButtons(LayoutType type, List<Task> tasks) {
+        Map<Task, TaskNode> nodeMap = new HashMap<>();
+        displays.get(type).getChildren().clear();
+        if (displays.containsKey(type)) {
+            VBox display = displays.get(type);
+            List<TaskNode> taskNodes = tasks.stream()
+                    .map(task -> taskNodeFactory.makeTaskNode(task))
+                    .toList();
+            taskNodes.forEach(node -> {
+                display.getChildren().add(node.getNodeNoButtons());
+                nodeMap.put(node.getTask(), node);
+            });
+            shownTasks.put(type, nodeMap);
+        }
+    }
     public TaskNode getShownTask(Task task) {
         for (LayoutType type : LayoutType.values()) {
             if (shownTasks.get(type).containsKey(task)) {
